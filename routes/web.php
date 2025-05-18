@@ -2,9 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudUserController;
+use App\Http\Controllers\SocialiteController;
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+
+Route::controller(SocialiteController::class)->group(function () {
+    Route::get('auth/{provider}/redirect', 'authProviderRedirect')->name('auth.redirection');
+    Route::get('auth/{provider}/callback', 'socialAuthentication')->name('auth.callback');
+});
+
 
 Route::get('login', [CrudUserController::class, 'login'])->name('login');
 Route::post('login', [CrudUserController::class, 'authUser'])->name('user.authUser');
@@ -22,7 +31,14 @@ Route::post('update', [CrudUserController::class, 'postUpdateUser'])->name('user
 
 Route::get('list', [CrudUserController::class, 'listUser'])->name('user.list');
 
-Route::post('signout', [CrudUserController::class, 'signOut'])->name('signout');
+Route::get('signout', [CrudUserController::class, 'signOut'])->name('signout');
+
+Route::get('admin', function () {
+    return view('admin');
+})->name('admin.dashboard');
+
+Route::get('profile', [CrudUserController::class, 'profile'])->name('user.profile');
+Route::post('profile', [CrudUserController::class, 'updateProfile'])->name('user.updateProfile');
 
 
 
