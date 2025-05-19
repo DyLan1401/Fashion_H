@@ -30,7 +30,6 @@
             @endforeach
         </tbody>
     </table>
-    {{-- Nếu có phân trang thì thêm dòng sau --}}
-    {{-- {{ $users->links() }} --}}
+   
 </div>
 @endsection

@@ -3,6 +3,14 @@
 @section('content')
 <div class="container mt-4">
     <h2>Danh sách liên hệ</h2>
+    <form class="row mb-3" method="GET" action="">
+        <div class="col-md-4">
+            <input type="text" name="search" class="form-control" placeholder="Tìm theo tên hoặc email" value="{{ request('search') }}">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </form>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -35,6 +43,7 @@
             @endforeach
         </tbody>
     </table>
-    {{ $contacts->links() }}
+
+    {{ $contacts->links('pagination::bootstrap-5') }}
 </div>
 @endsection 
