@@ -185,4 +185,21 @@ class CrudUserController extends Controller
         return redirect()->route('user.profile')
                         ->with('success', 'Thông tin đã được cập nhật thành công!');
     }
+    public function showChangePasswordForm() {
+        return view('auth.change-password');
+    }
+    
+    public function changePassword(Request $request) {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+        if (!Hash::check($request->current_password, Auth::user()->password)) {
+            return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không đúng!']);
+        }
+        $user = Auth::user();
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        return back()->with('success', 'Đổi mật khẩu thành công!');
+    }
 }
