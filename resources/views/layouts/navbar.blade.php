@@ -34,7 +34,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="">Liên hệ</a>
+                    <a class="nav-link" href="{{ route('contact.form') }}">Liên hệ</a>
                 </li>
             </ul>
 

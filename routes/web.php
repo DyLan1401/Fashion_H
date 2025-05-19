@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContactController;
 
 // Routes cho User
 Route::get('/', function () {
@@ -21,6 +22,9 @@ Route::get('read', [UserController::class, 'readUser'])->name('user.readUser');
 Route::get('update', [UserController::class, 'updateUser'])->name('user.updateUser');
 Route::post('update', [UserController::class, 'postUpdateUser'])->name('user.postUpdateUser');
 
+// Form liên hệ cho người dùng
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Routes cho Admin
 Route::group(['middleware' => ['web', 'auth', 'admin']], function () {
@@ -32,6 +36,11 @@ Route::group(['middleware' => ['web', 'auth', 'admin']], function () {
     Route::get('/admin/users/{id}/edit', [AdminController::class, 'updateUser'])->name('admin.users.edit');
     Route::post('/admin/users/{id}/edit', [AdminController::class, 'postUpdateUser'])->name('admin.users.update');
     Route::get('/admin/users/{id}/delete', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+});
+
+// Admin quản lý contact
+Route::middleware(['web', 'auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
 });
 
 
