@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,4 +42,7 @@ Route::get('profile', [CrudUserController::class, 'profile'])->name('user.profil
 Route::post('profile', [CrudUserController::class, 'updateProfile'])->name('user.updateProfile');
 
 
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::post('/profile/change-password', [UserController::class, 'changePassword'])->name('user.changePassword');
+});
