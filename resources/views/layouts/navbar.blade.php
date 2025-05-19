@@ -5,7 +5,7 @@
     <title>Fashion H</title>
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
-    <script type="text/javascript" src="{{ asset('js/scripts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -18,7 +18,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="">Trang chủ</a>
+                    <a class="nav-link" href="{{ route('signout') }}">Trang chủ</a>
                 </li>
                 
                 <!-- Sản phẩm Dropdown -->
@@ -27,7 +27,7 @@
                         Sản phẩm
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="productsDropdown">
-                        <li><a class="dropdown-item" href="">Sản phẩm nam</a></li>
+                        <li><a class="dropdown-item" href="{{ route('signout') }}">Sản phẩm nam</a></li>
                         <li><a class="dropdown-item" href="">Sản phẩm nữ</a></li>
                         <li><a class="dropdown-item" href="">Sản phẩm giảm giá</a></li>
                     </ul>
