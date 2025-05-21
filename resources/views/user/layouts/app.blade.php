@@ -9,19 +9,18 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="manifest" href="site.html">
 		<link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
         <!-- Place favicon.ico in the root directory -->
 
 		<!-- CSS here -->
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
-        <link rel="stylesheet" href="{{ asset('css/owl-carousel')}}">
+        <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css')}}">
         <link rel="stylesheet" href="{{ asset('css/animate.min.css')}}">
         <link rel="stylesheet" href="{{ asset('css/magnific-popup.css')}}">
         <link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css')}}">
         <link rel="stylesheet" href="{{ asset('css/flaticon.css')}}">
         <link rel="stylesheet" href="{{ asset('css/meanmenu.css')}}">
-        <link rel="stylesheet" href="{{ asset('css/meanmenu.css')}}">
+        <link rel="stylesheet" href="{{ asset('css/jquery-ui.css')}}">
         <link rel="stylesheet" href="{{ asset('css/slick.css')}}">
         <link rel="stylesheet" href="{{ asset('css/default.css')}}">
         <link rel="stylesheet" href="{{ asset('css/style.css')}}">
@@ -29,6 +28,7 @@
     </head>
     <body>
 
+    
     <!-- header start -->
         <header class="transparent-header">
             <div class="header-area box-90">
@@ -47,7 +47,7 @@
                                 <h4>Category</h4>
                                 <ul>
                                     @foreach ($categories as $category)
-                                        <li><a href="shop.html"><i class="flaticon-shopping-cart-1"></i> {{ $category->category_name }}</a></li>
+                                        <li><a href="#"><i class="flaticon-shopping-cart-1"></i> {{ $category->category_name }}</a></li>
                                     @endforeach
                                     
                                 </ul>
@@ -58,72 +58,10 @@
                                 <nav id="mobile-menu">
                                     <ul>
                                         <li>
-                                            <a href="index.html">Home</a>
+                                            <a href="{{ Route('/') }}">Home</a>
                                         </li>
                                         <li class="mega-menu">
-                                            <a href="shop.html">Shop</a>
-                                            <ul class="submenu ">
-                                                <li>
-                                                    <a href="#">Category View</a>
-                                                    <ul class="submenu  level-1">
-                                                        <li>
-                                                            <a href="shop.html">Shop 2 Column</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="shop-filter.html">Shop Filter Style</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="shop-full.html">Shop Full</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="shop-3-col.html">Shop 3 Column</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="shop-list.html">List View</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Category View</a>
-                                                    <ul class="submenu">
-                                                        <li>
-                                                            <a href="shop-left-sidebar.html">Sidebar Left</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="shop-sidebar-right.html">Sidebar Right</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="cart.html">Shopping Cart</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="checkout.html">Checkout</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="wishlist.html">My Wishlist</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Products Types</a>
-                                                    <ul class="submenu">
-                                                        <li>
-                                                            <a href="product-simple.html">Simple Product</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="product-variable.html">Variable Product</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="product-upcoming.html">Product Upcoming</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="product-up-thumb.html">Thumb Top Product</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="product-sidebar.html">Product Sidebar</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
+                                            <a href="{{ Route('shop') }}">Shop</a>
                                         </li>
                                         <li>
                                             <a href="shop-filter.html">Products </a>
@@ -298,9 +236,106 @@
         </header>
         <!-- header end -->
         @yield('content')
-
+   <!-- footer start -->
+        <footer>
+            <div class="footer-area box-90 pt-100 pb-60">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-5 col-md-6 ">
+                            <div class="footer-widget mb-40">
+                                <div class="footer-logo">
+                                    <a href="index.html"><img src="img/logo/footer-logo.png" alt=""></a>
+                                </div>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore mag na
+                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                </p>
+                                <div class="footer-time d-flex mt-30">
+                                    <div class="time-icon">
+                                        <img src="img/icon/time.png" alt="">
+                                    </div>
+                                    <div class="time-text">
+                                        <span>Got Questions ? Call us 24/7!</span>
+                                        <h2>(0600) 874 548</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-3 d-lg-none d-xl-block">
+                            <div class="footer-widget pl-50 mb-40">
+                                <h3>Social Media</h3>
+                                <ul class="footer-link">
+                                    <li><a href="#">Facebook</a></li>
+                                    <li><a href="#">Twitter</a></li>
+                                    <li><a href="#">Behance</a></li>
+                                    <li><a href="#"> Dribbble</a></li>
+                                    <li><a href="#">Linkedin</a></li>
+                                    <li><a href="#">Youtube</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-3 d-lg-none d-xl-block">
+                            <div class="footer-widget pl-30 mb-40">
+                                <h3>Location</h3>
+                                <ul class="footer-link">
+                                    <li><a href="#">New York</a></li>
+                                    <li><a href="#">Tokyo</a></li>
+                                    <li><a href="#">Dhaka</a></li>
+                                    <li><a href="#"> Chittagong</a></li>
+                                    <li><a href="#">China</a></li>
+                                    <li><a href="#">Japan</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-3">
+                            <div class="footer-widget mb-40">
+                                <h3>About</h3>
+                                <ul class="footer-link">
+                                    <li><a href="#">Terms & Conditions</a></li>
+                                    <li><a href="#"> Privacy Policy</a></li>
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="#">Wholesale</a></li>
+                                    <li><a href="#">Direction</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-5 col-md-6">
+                            <div class="footer-widget mb-40">
+                                <div class="footer-banner">
+                                    <a href="shop.html"><img src="img/banner/add.jpg" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-area box-105">
+                <div class="container-fluid">
+                    <div class="copyright-border pt-30 pb-30">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-7">
+                                <div class="copyright text-center text-md-left">
+                                    <p>Copyright © 2019 <a href="#">BasicTheme</a>. All Rights Reserved</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-5">
+                                <div class="footer-icon text-center text-md-right ">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-behance"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="#"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer end -->
 		<!-- JS here -->
         <script src="{{ asset('js/vendor/jquery-1.12.4.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui.js') }}"></script>
         <script src="{{ asset('js/popper.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
