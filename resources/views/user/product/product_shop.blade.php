@@ -70,7 +70,7 @@
                                 <div class="col-xl-4 col-lg-6 col-md-6">
                                     <div class="product-wrapper mb-50">
                                         <div class="product-img mb-25">
-                                            <a href="product-details.html">
+                                            <a href="{{ route('show',['id'=>$product->id]) }}">
                                                 <img
                                                     src="{{ 
                                                             $product->product_image && Storage::disk('public')->exists('image/' . $product->product_image) 
