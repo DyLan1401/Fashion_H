@@ -36,7 +36,9 @@ class AdminController extends Controller
         User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
+            'phone' => $data['phone'],
+            'address' => $data['address'] ?? null,
         ]);
         return redirect()->route('admin.users.list');
     }
@@ -64,7 +66,10 @@ class AdminController extends Controller
         $user = User::find($id);
         $user->name = $input['name'];
         $user->email = $input['email'];
+        $user->phone = $input['phone'];
+        $user->address = $input['address'];
         $user->password = Hash::make($input['password']);
+
         $user->save();
         return redirect()->route('admin.users.list');
     }

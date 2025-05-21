@@ -103,6 +103,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'phone' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
         ]);
@@ -110,7 +111,9 @@ class UserController extends Controller
         User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
+             'phone' => $data['phone'],
+        'address' => $data['address'] ?? null, 
         ]);
         return redirect('login');
     }
@@ -140,6 +143,8 @@ class UserController extends Controller
         $user = User::find($input['id']);
         $user->name = $input['name'];
         $user->email = $input['email'];
+        $user->phone = $input['phone'];
+        $user->address = $input['address'];
         $user->password = Hash::make($input['password']);
         $user->save();
         return redirect('/')->withSuccess('Cập nhật thành công');

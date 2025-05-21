@@ -32,9 +32,10 @@ class ContactController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
+            'phone' => 'required',
             'message' => 'required',
         ]);
-        Contact::create($request->only('name', 'email', 'message'));
+        Contact::create($request->only('name', 'email', 'message','phone'));
         return redirect()->route('contact.form')->with('success', 'Gửi liên hệ thành công!');
     }
 

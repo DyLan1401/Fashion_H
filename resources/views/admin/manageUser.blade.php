@@ -12,6 +12,8 @@
                 <th>ID</th>
                 <th>Tên</th>
                 <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
                 <th class="text-center">Hành động</th>
             </tr>
         </thead>
@@ -21,6 +23,8 @@
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
+                     <td>{{ $user->phone }}</td>
+                      <td>{{ $user->address }}</td>
                     <td class="text-center">
                         <a href="{{ route('admin.users.show', ['id' => $user->id]) }}" class="btn btn-info btn-sm">Xem</a>
                         <a href="{{ route('admin.users.edit', ['id' => $user->id]) }}" class="btn btn-warning btn-sm">Sửa</a>

@@ -18,6 +18,14 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+     'phone' => '0123456789',
+            'address' => 'Thanh pho ho chi minh',
+        
         ]);
-    }
+
+           $this->call([
+        AdminUserSeeder::class,
+ 
+    ]);
+ }
 }

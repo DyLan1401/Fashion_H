@@ -29,6 +29,14 @@
                         <th>Email</th>
                         <td>{{ $user->email }}</td>
                     </tr>
+                     <tr>
+                        <th>Phone</th>
+                        <td>{{ $user->phone }}</td>
+                    </tr>
+                     <tr>
+                        <th>Address</th>
+                        <td>{{ $user->address }}</td>
+                    </tr>
                     <tr>
                         <th>Role</th>
                         <td>
