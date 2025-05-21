@@ -28,8 +28,15 @@ class ProductsController extends Controller
 
             $query->whereIn('category_id', $categories);
         }
-
-        // 💰 Lọc theo giá
+        // Lọc theo màu
+        if ($request->has('color')) {
+            $colors = $request->color;
+            if (is_string($colors)) {
+                $colors = explode(',', $colors);
+            }
+            $query->whereIn('color', $colors);
+        }
+        // Lọc theo giá
         if ($request->has('min_price') && $request->has('max_price')) {
             $query->whereBetween('price', [
                 (int) $request->min_price,
@@ -51,17 +58,16 @@ class ProductsController extends Controller
             // Nếu không có tham số sort, sort mặc định theo created_at mới nhất
             $query->orderBy('created_at', 'desc');
         }
-        
+
         $products = $query->paginate(12);
         $categories = Categories::all();
-        // dd($products);
         return view('user.product.product_shop', compact('products', 'categories'));
     }
 
     public function show($id)
     {
         $products = Products::with('category')->find($id);
-        dd($products);
+        //dd($products);
         return view('user.product.product_shop', compact('products'));
     }
 }

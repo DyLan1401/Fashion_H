@@ -5,7 +5,7 @@
             @if ($paginator->onFirstPage())
                 <li class="disabled"><span><i class="fas fa-angle-double-left"></i></span></li>
             @else
-                <li><a href="{{ $paginator->url(1) }}"><i class="fas fa-angle-double-left"></i></a></li>
+                <li><a href="{{ $paginator->url(1) . (parse_url($paginator->url(1), PHP_URL_QUERY) ? '&' : '?') . http_build_query(request()->query()) }}"><i class="fas fa-angle-double-left"></i></a></li>
             @endif
 
             {{-- Các trang số --}}
@@ -15,20 +15,20 @@
                         @if ($page == $paginator->currentPage())
                             <li class="active"><a href="#">{{ $page }}</a></li>
                         @else
-                            <li><a href="{{ $url }}">{{ $page }}</a></li>
+                            <li><a href="{{ $url . (parse_url($url, PHP_URL_QUERY) ? '&' : '?') . http_build_query(request()->query()) }}">{{ $page }}</a></li>
                         @endif
                     @endforeach
                 @endif
 
                 {{-- Dấu ba chấm --}}
                 @if (is_string($element))
-                    <li><a href="#"><i class="fas fa-ellipsis-h"></i></a></li>
+                    <li><span><i class="fas fa-ellipsis-h"></i></span></li>
                 @endif
             @endforeach
 
             {{-- Trang cuối --}}
             @if ($paginator->hasMorePages())
-                <li><a href="{{ $paginator->nextPageUrl() }}"><i class="fas fa-angle-double-right"></i></a></li>
+                <li><a href="{{ $paginator->nextPageUrl() . (parse_url($paginator->nextPageUrl(), PHP_URL_QUERY) ? '&' : '?') . http_build_query(request()->query()) }}"><i class="fas fa-angle-double-right"></i></a></li>
             @else
                 <li class="disabled"><span><i class="fas fa-angle-double-right"></i></span></li>
             @endif

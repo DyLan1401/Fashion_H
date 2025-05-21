@@ -176,18 +176,10 @@
                         </div>
 
                         <div class="shop-widget">
-                            <h3 class="shop-title">Filter selection</h3>
-                            <div class="price-filter">
-                                <div id="slider-range"></div>
-                                <input type="text" id="amount">
-                            </div>
-                        </div>
-
-                        <div class="shop-widget">
                             <h3 class="shop-title">Catergories</h3>
                             <ul class="shop-link">
                                 @foreach ($categories as $category)
-                                    <li><a href="{{ route('show', ['id' => $category->id]) }}"><i class="far fa-square"></i> {{ $category->category_name }}</a></li>
+                                    <li><a href="{{ route('shop', ['categories[]' => $category->id]) }}"><i class="far fa-square"></i> {{ $category->category_name }}</a></li>
                                 @endforeach
                             </ul>
                         </div>
@@ -197,12 +189,12 @@
                         <div class="shop-widget">
                             <h3 class="shop-title">color</h3>
                             <ul class="shop-link">
-                                <li><a href="shop.html"><span class="blue"></span> Blue</a></li>
-                                <li><a href="shop.html"><span class="green"></span> Green</a></li>
-                                <li><a href="shop.html"><span class="orange"></span> Orange</a></li>
-                                <li><a href="shop.html"><span class="navy"></span> Navy</a></li>
-                                <li><a href="shop.html"><span class="pinkish"></span> Pinkish</a></li>
-                                <li><a href="shop.html"><span class="vista"></span> Vista Blue</a></li>
+                                <li><a href="{{ route('shop', ['color[]' => 'blue']) }}"><span class="blue"></span> Blue</a></li>
+                                <li><a href="{{ route('shop', ['color[]' => 'green']) }}"><span class="green"></span> Green</a></li>
+                                <li><a href="{{ route('shop', ['color[]' => 'orange']) }}"><span class="orange"></span> Orange</a></li>
+                                <li><a href="{{ route('shop', ['color[]' => 'navy']) }}"><span class="navy"></span> Navy</a></li>
+                                <li><a href="{{ route('shop', ['color[]' => 'pinkish']) }}"><span class="pinkish"></span> Pinkish</a></li>
+                                <li><a href="{{ route('shop', ['color[]' => 'vista']) }}"><span class="vista"></span> Vista Blue</a></li>
                             </ul>
                         </div>
 

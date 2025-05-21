@@ -23,7 +23,7 @@ class ProductsFactory extends Factory
             'product_description' => $this->faker->sentence(10), // Mô tả ngẫu nhiên
             'price' => $this->faker->randomFloat(2, 10, 1000), // Giá ngẫu nhiên từ 10 đến 1000
             'quantity' => $this->faker->numberBetween(1, 100), // Số lượng từ 1 đến 100
-            'color' => $this->faker->safeColorName(), // Tên màu ngẫu nhiên
+            'color' => $this->faker->randomElement(['Blue','Green','Orange','Navy','Pinkish','Vista']), // Tên màu ngẫu nhiên
             'size' => $this->faker->randomElement(['S', 'M', 'L', 'XL', 'XXL']), // Kích thước ngẫu nhiên
             'type_id' => $type->id,
             'category_id' => $type->category->id, // Giá trị category_id ngẫu nhiên (giả sử có 5 danh mục)
