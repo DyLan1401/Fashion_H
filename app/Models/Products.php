@@ -9,6 +9,19 @@ use Laravel\Scout\Searchable;
 class Products extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'product_name',
+        'product_description',
+        'price',
+        'quantity',
+        'color',
+        'size',
+        'type_id',
+        'category_id',
+        'product_image'
+    ];
+
     public function Category(){
         return $this->belongsTo(Categories::class,'category_id');
     }
