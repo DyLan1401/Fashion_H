@@ -66,8 +66,8 @@ class ProductsController extends Controller
 
     public function show($id)
     {
-        $products = Products::with('category')->find($id);
+        $product = Products::with('category')->find($id);
         //dd($products);
-        return view('user.product.product_shop', compact('products'));
+        return view('user.product.product_detail', compact('product'));
     }
 }
