@@ -31,11 +31,12 @@
                             <div class="tab-pane fade show active" id="home" role="tabpanel">
                                 <div class="product-large-img">
                                     <img src="{{ 
-                                                    $product->product_image && Storage::disk('public')->exists('image/' . $product->product_image) 
-                                                    ? asset('storage/image/' . $product->product_image) 
-                                                    : asset('img/product/image.png') 
-                                                }}"
-                                        alt="{{ $product->product_name }}">
+                                                        $product->product_image
+                                                        ? asset('storage/' . $product->product_image)
+                                                        : asset('img/product/image.png') 
+                                                    }}"
+                                                    alt="{{ $product->product_name }}"
+                                                    onerror="this.onerror=null; this.src='{{ asset('img/product/image.png') }}';">
                                 </div>
                             </div>
                         </div>
