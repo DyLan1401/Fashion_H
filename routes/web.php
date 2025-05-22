@@ -5,11 +5,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+use App\Http\Controllers\ProductsController;
+use App\Models\Categories;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\SocialiteController;
 
 Route::get('/', function () {
+
+    return view('user/home/index');
+})->name('/');
+Route::get('shop',[ProductsController::class, 'index'])->name('shop');
+Route::get('shop/{id}',[ProductsController::class, 'show'])->name('show');
+// Route::get('/category',[
+//     Categories::class,
+//     'index'
+// ]);
+
     return view('welcome');
 })->name('home');
 
