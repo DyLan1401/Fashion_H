@@ -1,10 +1,10 @@
 <?php
-use App\Http\Controllers\RevenueController;
+
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+use App\Http\Controllers\PurchaseHistoryController;
 
-Route::get('/revenues', [RevenueController::class, 'index'])->name('revenues.index');
-Route::get('/revenues/create', [RevenueController::class, 'create'])->name('revenues.create');
-Route::post('/revenues', [RevenueController::class, 'store'])->name('revenues.store');
+Route::get('/purchase-histories', [PurchaseHistoryController::class, 'index'])->name('purchase_histories.index');
