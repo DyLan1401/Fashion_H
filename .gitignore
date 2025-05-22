@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1f39f8f7c4d7065f17507e5acb27aef3c70d026e
+
 # Build and Release Folders
 bin-debug/
 bin-release/
@@ -20,8 +17,7 @@ bin-release/
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
-<<<<<<< HEAD
-=======
+
 /.phpunit.cache
 /node_modules
 /public/build
@@ -41,5 +37,3 @@ yarn-error.log
 /.idea
 /.vscode
 
-=======
->>>>>>> 1f39f8f7c4d7065f17507e5acb27aef3c70d026e
