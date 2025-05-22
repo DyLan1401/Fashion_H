@@ -6,6 +6,7 @@ use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
+
 use App\Http\Controllers\DiscountController;
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,9 @@ Route::put('/discounts/{discount_id}', [DiscountController::class, 'update'])->n
 
     Route::delete('/{id}', [DiscountController::class, 'destroy'])->name('discounts.destroy'); // Xóa
 });
+
+Route::resource('posts', PostController::class);
+
 
 Route::get('/', function () {
     return view('welcome');
