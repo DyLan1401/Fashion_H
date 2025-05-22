@@ -8,6 +8,14 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    public function run()
+    {
+        $this->call([
+            DiscountSeeder::class,
+        ]);
+    }
+}
+
     /**
      * Seed the application's database.
      */

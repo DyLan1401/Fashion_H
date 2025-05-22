@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+
         //Truncate table
         DB::table('users')->truncate();
         //Insert data

@@ -23,6 +23,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.createUser') }}">Create user</a>
                     </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('discounts.index') }}">Discounts</a>
+
                     <li class="nav-item">
             <a class="nav-link" href="{{ route('posts.index') }}">Posts</a>
         </li>
