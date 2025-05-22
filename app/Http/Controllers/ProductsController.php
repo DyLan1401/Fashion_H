@@ -28,6 +28,7 @@ class ProductsController extends Controller
 
             $query->whereIn('category_id', $categories);
         }
+        
         // Lọc theo màu
         if ($request->has('color')) {
             $colors = $request->color;
@@ -36,6 +37,7 @@ class ProductsController extends Controller
             }
             $query->whereIn('color', $colors);
         }
+        
         // Lọc theo giá
         if ($request->has('min_price') && $request->has('max_price')) {
             $query->whereBetween('price', [
@@ -44,23 +46,27 @@ class ProductsController extends Controller
             ]);
         }
 
-        // Xử lý sắp xếp theo giá nếu có tham số sort
+        // Xử lý sắp xếp
         if ($request->has('sort')) {
-            if ($request->sort === 'asc') {
-                $query->orderBy('price', 'asc');
-            } elseif ($request->sort === 'desc') {
-                $query->orderBy('price', 'desc');
-            } else {
-                // Mặc định nếu không hợp lệ thì sort theo created_at mới nhất
-                $query->orderBy('created_at', 'desc');
+            switch ($request->sort) {
+                case 'asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'desc');
+                    break;
             }
         } else {
-            // Nếu không có tham số sort, sort mặc định theo created_at mới nhất
+            // Mặc định sắp xếp theo created_at mới nhất
             $query->orderBy('created_at', 'desc');
         }
 
-        $products = $query->paginate(12);
+        $products = $query->paginate(12)->withQueryString();
         $categories = Categories::all();
+        
         return view('user.product.product_shop', compact('products', 'categories'));
     }
 
@@ -69,5 +75,9 @@ class ProductsController extends Controller
         $product = Products::with('category')->find($id);
         //dd($products);
         return view('user.product.product_detail', compact('product'));
+    }
+
+    public function getProductList(){
+        return view('admin.product.index');
     }
 }

@@ -1,34 +1,35 @@
 @if ($paginator->hasPages())
     <div class="basic-pagination basic-pagination-2 text-center mt-20">
         <ul>
-            {{-- Trang đầu --}}
+            {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li class="disabled"><span><i class="fas fa-angle-double-left"></i></span></li>
             @else
-                <li><a href="{{ $paginator->url(1) . (parse_url($paginator->url(1), PHP_URL_QUERY) ? '&' : '?') . http_build_query(request()->query()) }}"><i class="fas fa-angle-double-left"></i></a></li>
+                <li><a href="{{ $paginator->previousPageUrl() }}"><i class="fas fa-angle-double-left"></i></a></li>
             @endif
 
-            {{-- Các trang số --}}
+            {{-- Pagination Elements --}}
             @foreach ($elements as $element)
+                {{-- Array Of Links --}}
                 @if (is_array($element))
                     @foreach ($element as $page => $url)
                         @if ($page == $paginator->currentPage())
-                            <li class="active"><a href="#">{{ $page }}</a></li>
+                            <li class="active"><span>{{ $page }}</span></li>
                         @else
-                            <li><a href="{{ $url . (parse_url($url, PHP_URL_QUERY) ? '&' : '?') . http_build_query(request()->query()) }}">{{ $page }}</a></li>
+                            <li><a href="{{ $url }}">{{ $page }}</a></li>
                         @endif
                     @endforeach
                 @endif
 
-                {{-- Dấu ba chấm --}}
+                {{-- "Three Dots" Separator --}}
                 @if (is_string($element))
-                    <li><span><i class="fas fa-ellipsis-h"></i></span></li>
+                    <li class="disabled"><span>{{ $element }}</span></li>
                 @endif
             @endforeach
 
-            {{-- Trang cuối --}}
+            {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
-                <li><a href="{{ $paginator->nextPageUrl() . (parse_url($paginator->nextPageUrl(), PHP_URL_QUERY) ? '&' : '?') . http_build_query(request()->query()) }}"><i class="fas fa-angle-double-right"></i></a></li>
+                <li><a href="{{ $paginator->nextPageUrl() }}"><i class="fas fa-angle-double-right"></i></a></li>
             @else
                 <li class="disabled"><span><i class="fas fa-angle-double-right"></i></span></li>
             @endif

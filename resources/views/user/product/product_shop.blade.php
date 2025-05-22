@@ -73,11 +73,13 @@
                                             <a href="{{ route('show',['id'=>$product->id]) }}">
                                                 <img
                                                     src="{{ 
-                                                            $product->product_image && Storage::disk('public')->exists('image/' . $product->product_image) 
-                                                            ? asset('storage/image/' . $product->product_image) 
-                                                            : asset('img/product/image.png') 
-                                                        }}"
-                                                    alt="{{ $product->product_name }}">
+                                                        $product->product_image
+                                                        ? asset('storage/' . $product->product_image)
+                                                        : asset('img/product/image.png') 
+                                                    }}"
+                                                    alt="{{ $product->product_name }}"
+                                                    onerror="this.onerror=null; this.src='{{ asset('img/product/image.png') }}';"
+                                                    style="width: 290; height: 360; object-fit: cover;">
                                             </a>
                                             <div class="product-action text-center">
                                                 <a href="#" title="Shoppingb Cart">
@@ -116,14 +118,15 @@
                                 <div class="col-xl-4">
                                     <div class="product-wrapper mb-30">
                                         <div class="product-img">
-                                            <a href="product-details.html">
+                                            <a href="{{ route('show',['id'=>$product->id]) }}">
                                                 <img
-                                                    src="{{ 
-                                                            $product->product_image && Storage::disk('public')->exists('image/' . $product->product_image) 
-                                                            ? asset('storage/image/' . $product->product_image) 
-                                                            : asset('img/product/image.png') 
-                                                        }}"
-                                                    alt="{{ $product->product_name }}">
+                                                src="{{ 
+                                                        $product->product_image
+                                                        ? asset('storage/' . $product->product_image)
+                                                        : asset('img/product/image.png') 
+                                                    }}"
+                                                    alt="{{ $product->product_name }}"
+                                                    onerror="this.onerror=null; this.src='{{ asset('img/product/image.png') }}';"
                                             </a>
                                         </div>
                                     </div>
