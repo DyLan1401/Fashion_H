@@ -3,20 +3,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTable extends Migration
+class CreateProductReviewsTable extends Migration
 {
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('product_reviews', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('product_name');
+            $table->string('reviewer_name');
             $table->text('content');
+            $table->unsignedTinyInteger('rating');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('product_reviews');
     }
 }
