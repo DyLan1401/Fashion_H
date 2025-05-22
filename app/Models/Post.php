@@ -4,11 +4,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductReview extends Model
+class Post extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'product_name', 'reviewer_name', 'content', 'rating'
-    ];
+    protected $fillable = ['title', 'content'];
 }
