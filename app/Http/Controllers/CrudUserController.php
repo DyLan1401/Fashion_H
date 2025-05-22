@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Hash;
-use Session;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 /**
  * CRUD User controller
@@ -20,7 +22,7 @@ class CrudUserController extends Controller
      */
     public function login()
     {
-        return view('crud_user.login');
+        return view('auth.login');
     }
 
     /**
@@ -29,28 +31,33 @@ class CrudUserController extends Controller
     public function authUser(Request $request)
     {
         $request->validate([
-            'email' => 'required',
-            'password' => 'required',
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $user = User::where('email', $request->email)->first();
 
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('list')
-                ->withSuccess('Signed in');
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user);
+            
+           
+            return redirect('list');
         }
 
-        return redirect("login")->withSuccess('Login details are not valid');
+        return back()->withErrors([
+            'email' => 'Thông tin đăng nhập không chính xác.',
+        ]);
     }
+    
 
     /**
      * Registration page
      */
     public function createUser()
     {
-        return view('crud_user.create');
+        return view('auth.create');
     }
-
+ 
     /**
      * User submit form register
      */
@@ -65,8 +72,9 @@ class CrudUserController extends Controller
         $data = $request->all();
         $check = User::create([
             'name' => $data['name'],
+           
             'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+            'password' =>\Illuminate\Support\Facades\Hash::make($data['password'])
         ]);
 
         return redirect("login");
@@ -75,19 +83,17 @@ class CrudUserController extends Controller
     /**
      * View user detail page
      */
-    public function readUser(Request $request)
-    {
+    public function readUser(Request $request) {
         $user_id = $request->get('id');
         $user = User::find($user_id);
 
-        return view('crud_user.read', ['messi' => $user]);
+        return view('auth.read', ['messi' => $user]);
     }
 
     /**
      * Delete user by id
      */
-    public function deleteUser(Request $request)
-    {
+    public function deleteUser(Request $request) {
         $user_id = $request->get('id');
         $user = User::destroy($user_id);
 
@@ -102,7 +108,7 @@ class CrudUserController extends Controller
         $user_id = $request->get('id');
         $user = User::find($user_id);
 
-        return view('crud_user.update', ['user' => $user]);
+        return view('auth.update', ['user' => $user]);
     }
 
     /**
@@ -114,15 +120,15 @@ class CrudUserController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,id,' . $input['id'],
+            'email' => 'required|email|unique:users,id,'.$input['id'],
             'password' => 'required|min:6',
         ]);
 
-        $user = User::find($input['id']);
-        $user->name = $input['name'];
-        $user->email = $input['email'];
-        $user->password = $input['password'];
-        $user->save();
+       $user = User::find($input['id']);
+       $user->name = $input['name'];
+       $user->email = $input['email'];
+       $user->password = $input['password'];
+       $user->save();
 
         return redirect("list")->withSuccess('You have signed-in');
     }
@@ -132,27 +138,22 @@ class CrudUserController extends Controller
      */
     public function listUser()
     {
-        if (Auth::check()) {
-            $users = User::paginate(10);
-            return view('crud_user.list', ['users' => $users]);
-        }
+//       // Lấy tất cả người dùng từ bảng users
+        $users = User::all();
 
-        return redirect("login")->withSuccess('You are not allowed to access');
+        // Truyền dữ liệu vào view
+        return view('auth.list', compact('users'));
     }
 
+    
+   
     /**
      * Sign out
      */
-    public function signOut()
-    {
-        Session::flush();
+    public function signOut() {
+        \Illuminate\Support\Facades\Session::flush();
         Auth::logout();
 
         return Redirect('login');
-    }
-
-    public function users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'user_role');
     }
 }
