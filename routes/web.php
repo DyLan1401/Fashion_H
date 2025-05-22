@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SupportController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-// 1. Support Online
 
+use App\Http\Controllers\HomeController;
 
-Route::resource('supports', SupportController::class);
+Route::get('/', [HomeController::class, 'index'])->name('home');
