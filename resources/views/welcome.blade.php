@@ -174,3 +174,13 @@
         </div>
     </body>
 </html>
+
+
+
+    <div class="container mt-4">
+trang home    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+</body>
+</html>
+
