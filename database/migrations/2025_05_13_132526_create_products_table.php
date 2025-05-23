@@ -3,20 +3,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFavoritesTable extends Migration
+class CreateProductsTable extends Migration
 {
     public function up()
     {
-        Schema::create('favorites', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('user_name');
-            $table->string('product_name');
+            $table->string('name');
+            $table->decimal('price', 15, 2);
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('favorites');
+        Schema::dropIfExists('products');
     }
 }
