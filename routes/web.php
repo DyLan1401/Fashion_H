@@ -1,10 +1,13 @@
 <?php
-use App\Http\Controllers\RevenueController;
+
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/revenues', [RevenueController::class, 'index'])->name('revenues.index');
-Route::get('/revenues/create', [RevenueController::class, 'create'])->name('revenues.create');
-Route::post('/revenues', [RevenueController::class, 'store'])->name('revenues.store');
+use App\Http\Controllers\FavoriteController;
+
+Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+Route::get('/favorites/create', [FavoriteController::class, 'create'])->name('favorites.create');
+Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
