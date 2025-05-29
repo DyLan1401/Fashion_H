@@ -54,7 +54,6 @@ class ContactController extends Controller
     {
         return view('admin.contacts.show', compact('contact'));
     }
-
     /**
      * Show the form for editing the specified resource.
      */

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Notifications\Notifiable;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -56,20 +56,20 @@ class User extends Authenticatable
     }
 
 
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class, 'user_role');
-    }
+//     public function roles(): BelongsToMany
+//     {
+//         return $this->belongsToMany(Role::class, 'user_role');
+//     }
 
-    public function profile()
-{
-    return $this->hasOne(ProfileUser::class);
-}
+//     public function profile()
+// {
+//     return $this->hasOne(ProfileUser::class);
+// }
 
 
-public function orders()
-{
-    return $this->hasMany(Order::class);
-}
+// public function orders()
+// {
+//     return $this->hasMany(Order::class);
+// }
 
 }

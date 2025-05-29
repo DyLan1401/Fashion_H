@@ -71,6 +71,11 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin Routes
+// Frontend routes
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
@@ -83,15 +88,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{id}/edit', [AdminController::class, 'postUpdateUser'])->name('users.update');
     Route::get('/users/{id}/delete', [AdminController::class, 'deleteUser'])->name('users.delete');
 
-    // Contact Management Routes
-    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
-    Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
-    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+    // Contact Management Routes - Sử dụng Admin ContactController
+    Route::resource('contacts', ContactController::class)
+        ->only(['index', 'show', 'destroy']);
 });
-
-// Contact Form Routes
-Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Social Authentication Routes
 Route::controller(SocialiteController::class)->group(function () {

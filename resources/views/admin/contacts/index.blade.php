@@ -20,7 +20,6 @@
                 <th>ID</th>
                 <th>Tên</th>
                 <th>Email</th>
-                <th>Phone</th>
                 <th>Ngày gửi</th>
                 <th class="text-center">Hành động</th>
             </tr>
@@ -31,7 +30,6 @@
                     <td>{{ $contact->id }}</td>
                     <td>{{ $contact->name }}</td>
                     <td>{{ $contact->email }}</td>
-                    <td>{{ $contact->phone }}</td>
                     <td>{{ $contact->created_at->format('d/m/Y H:i') }}</td>
                     <td class="text-center">
                         <a href="{{ route('admin.contacts.show', $contact) }}" class="btn btn-info btn-sm">Xem</a>

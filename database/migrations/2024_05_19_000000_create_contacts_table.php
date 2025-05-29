@@ -9,11 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contacts', function (Blueprint $table) {
-            $table->id('contact_id' );
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone');
-            $table->text('message');
+            $table->id('contact_id' )->nullable();
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->text('message')->nullable();
             $table->timestamps();
         });
     }
