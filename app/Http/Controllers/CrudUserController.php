@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * CRUD User controller
@@ -18,7 +20,7 @@ class CrudUserController extends Controller
     /**
      * Login page
      */
-    public function login()
+    public function login(): View
     {
         return view('auth.login');
     }
@@ -26,7 +28,7 @@ class CrudUserController extends Controller
     /**
      * User submit form login
      */
-    public function authUser(Request $request)
+    public function authUser(Request $request): RedirectResponse
     {
         $request->validate([
             'email' => 'required|email',
@@ -34,17 +36,27 @@ class CrudUserController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
+        Log::info('Login attempt:', ['email' => $request->email]);
         
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            Log::info('User authenticated:', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+                'role_type' => gettype($user->role)
+            ]);
             
-            if ($user->role === 'admin') {
+            if (strtolower($user->role) === 'admin') {
+                Log::info('Admin login successful, redirecting to dashboard');
                 return redirect()->route('admin.dashboard');
             }
             
+            Log::info('Regular user login successful, redirecting to home');
             return redirect()->route('home');
         }
 
+        Log::warning('Login failed:', ['email' => $request->email]);
         return back()->withErrors([
             'email' => 'Thông tin đăng nhập không chính xác.',
         ]);
@@ -53,7 +65,7 @@ class CrudUserController extends Controller
     /**
      * Registration page
      */
-    public function createUser()
+    public function createUser(): View
     {
         return view('auth.create');
     }
@@ -61,7 +73,7 @@ class CrudUserController extends Controller
     /**
      * User submit form register
      */
-    public function postUser(Request $request)
+    public function postUser(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -85,7 +97,7 @@ class CrudUserController extends Controller
     /**
      * View user detail page
      */
-    public function readUser(Request $request)
+    public function readUser(Request $request): View
     {
         $user = User::findOrFail($request->id);
         return view('auth.read', ['user' => $user]);
@@ -94,7 +106,7 @@ class CrudUserController extends Controller
     /**
      * Delete user by id
      */
-    public function deleteUser(Request $request)
+    public function deleteUser(Request $request): RedirectResponse
     {
         User::destroy($request->id);
         return redirect()->route('user.list')->with('success', 'Xóa người dùng thành công!');
@@ -103,7 +115,7 @@ class CrudUserController extends Controller
     /**
      * Form update user page
      */
-    public function updateUser(Request $request)
+    public function updateUser(Request $request): View
     {
         $user = User::findOrFail($request->id);
         return view('auth.update', ['user' => $user]);
@@ -112,7 +124,7 @@ class CrudUserController extends Controller
     /**
      * Submit form update user
      */
-    public function postUpdateUser(Request $request)
+    public function postUpdateUser(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -122,13 +134,13 @@ class CrudUserController extends Controller
         ]);
 
         $user = User::findOrFail($request->id);
-        $user->update([
+        $user->fill([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'address' => $request->address
-        ]);
+        ])->save();
 
         return redirect()->route('home')->with('success', 'Cập nhật thành công!');
     }
@@ -136,7 +148,7 @@ class CrudUserController extends Controller
     /**
      * List of users
      */
-    public function listUser()
+    public function listUser(): View
     {
         $users = User::all();
         return view('auth.list', compact('users'));
@@ -145,7 +157,7 @@ class CrudUserController extends Controller
     /**
      * Sign out
      */
-    public function signOut()
+    public function signOut(): RedirectResponse
     {
         Auth::logout();
         return redirect()->route('login');
@@ -154,7 +166,7 @@ class CrudUserController extends Controller
     /**
      * User profile page
      */
-    public function profile()
+    public function profile(): View
     {
         return view('profile.index', ['user' => Auth::user()]);
     }
@@ -162,7 +174,7 @@ class CrudUserController extends Controller
     /**
      * Update user profile
      */
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request): RedirectResponse
     {
         $user = Auth::user();
         
@@ -173,15 +185,15 @@ class CrudUserController extends Controller
             'new_password' => 'nullable|min:8|confirmed',
         ]);
 
-        $user->update([
+        $user->fill([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address
-        ]);
+        ])->save();
 
         if ($request->filled('new_password')) {
-            $user->update(['password' => Hash::make($request->new_password)]);
+            $user->fill(['password' => Hash::make($request->new_password)])->save();
         }
 
         return redirect()->route('user.profile')
@@ -191,7 +203,7 @@ class CrudUserController extends Controller
     /**
      * Forgot password form
      */
-    public function forgotPasswordForm()
+    public function forgotPasswordForm(): View
     {
         return view('auth.forgot-password');
     }
@@ -199,7 +211,7 @@ class CrudUserController extends Controller
     /**
      * Process forgot password request
      */
-    public function forgotPassword(Request $request)
+    public function forgotPassword(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string',
@@ -215,7 +227,7 @@ class CrudUserController extends Controller
         }
 
         $newPassword = Str::random(8);
-        $user->update(['password' => Hash::make($newPassword)]);
+        $user->fill(['password' => Hash::make($newPassword)])->save();
 
         try {
             Mail::send('emails.reset-password', ['password' => $newPassword], function($message) use ($user) {

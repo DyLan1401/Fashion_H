@@ -1,5 +1,4 @@
 @extends('layouts.navbar')
-
 @section('content')
     <div class="container mt-4">
         {{-- Add the contact info sections --}}
@@ -58,7 +57,6 @@
                                 <input type="phone" class="form-control" id="phone" name="phone" required>
                             </div>
                         </div>
-                        <<<<<<< HEAD=======>>>>>>> add_crud_contact
                     </div>
                     <div class="mb-3">
                         <label for="message" class="form-label">YOUR MESSAGE</label>{{-- Update label text --}}

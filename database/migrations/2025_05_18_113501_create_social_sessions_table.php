@@ -14,13 +14,16 @@ return new class extends Migration
         if (!Schema::hasTable("social_sessions")) {
         Schema::create('social_sessions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->string('provider')->nullable();
             $table->string('provider_id')->nullable();
             $table->string('session_token')->unique();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id', 'fk_social_sessions_user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
         });
     }
 }
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('social_sessions');
     }
 };

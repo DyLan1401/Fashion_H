@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
@@ -14,12 +15,16 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để tiếp tục.');
+            Log::warning('Unauthenticated access attempt to admin area');
+            return redirect()->route('login');
         }
 
-        if (Auth::user()->role !== 'admin') {
+        $user = Auth::user();
+        Log::info('Admin middleware check:', ['user_id' => $user->id, 'role' => $user->role]);
+
+        if ($user->role !== 'admin') {
+            Log::warning('Non-admin access attempt:', ['user_id' => $user->id, 'role' => $user->role]);
             return redirect()->route('home')->with('error', 'Bạn không có quyền truy cập trang này.');
         }
 

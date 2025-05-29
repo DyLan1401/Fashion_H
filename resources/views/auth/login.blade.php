@@ -11,7 +11,6 @@
                         <form method="POST" action="{{ route('user.authUser') }}">
                             @csrf
                             <div class="form-group mb-3">
-                                <<<<<<< HEAD=======>>>>>>> add_crud_contact
                                     <label for="email_address">Email Address <span class="text-danger">**</span></label>
                                     <input type="text" placeholder="Enter Username or Email address..." id="email_address"
                                         class="form-control" name="email" required autofocus>
