@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Notifications\Notifiable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,33 +10,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-
     use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
-
-     * @var list<string>
-
      */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'phone',
-        'address',
-        'role'
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
-
-     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -55,19 +46,12 @@ class User extends Authenticatable
         ];
     }
 
-
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'user_role');
     }
 
-    public function profile()
-{
-    return $this->hasOne(ProfileUser::class);
-}
-
-
-public function orders()
+    public function orders()
 {
     return $this->hasMany(Order::class);
 }
