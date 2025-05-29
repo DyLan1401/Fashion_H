@@ -1,8 +1,8 @@
 <?php
-use App\Http\Controllers\RevenueController;
+use App\Http\Controllers\ProductController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('auth')->group(function() {
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/wishlist', [ProductController::class, 'wishlist'])->name('products.wishlist');
+    Route::post('/favorite/{id}', [ProductController::class, 'toggleFavorite'])->name('products.favorite');
 });
-
-Route::get('/revenue', [RevenueController::class, 'index'])->name('revenue.index');
