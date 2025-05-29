@@ -53,7 +53,7 @@
 
                                             </div>
                                             <div class="d-grid mx-auto">
-                                                <button type="submit" class="btn btn-success btn-block">LOGIN NOW</button>
+                                                <button type="submit" class="btn  btn-block text-white" style="background-color: #8BC34A; border-color: #8BC34A;">LOGIN NOW</button>
                                             </div>
                                             <div class="text-center my-3">
                                                 or

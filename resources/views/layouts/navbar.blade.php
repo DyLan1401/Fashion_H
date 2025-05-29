@@ -3,23 +3,19 @@
 
 <head>
     <title>Fashion H</title>
-     <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
-        @if(file_exists(public_path('css/styles.css')))
-            <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
-        @endif
-        @if(file_exists(public_path('js/scripts.js')))
-            <script type="text/javascript" src="{{ asset('js/scripts.js') }}" defer></script>
-        @endif
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+    @if(file_exists(public_path('css/styles.css')))
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+    @endif
+    @if(file_exists(public_path('js/scripts.js')))
+    <script type="text/javascript" src="{{ asset('js/scripts.js') }}" defer></script>
+    @endif
 
-        
-        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
-        <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+   
 </head>
 
 <body>
@@ -60,12 +56,12 @@
                                 </li>
                             </ul>
                         </li>
-                     <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('signout') }}">Blogs</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href={{ route('contact.form') }}>Liên Hệ</a>
-                            </li>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href={{ route('contact.form') }}>Liên Hệ</a>
+                        </li>
                     </ul>
                     <!-- Phần bên phải -->
                     <ul class="navbar-nav d-flex align-items-center">
@@ -75,27 +71,22 @@
                                 <button class="btn btn-outline-success" type="submit">Search</button>
                             </form>
                         </li>
-                        <li class="nav-item dropdown">
+                            <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 Tài khoản
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 @guest
-                                    <li><a class="dropdown-item" href="{{ route('login') }}">Đăng nhập</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('user.createUser') }}">Đăng kí</a></li>
+                                <li><a class="dropdown-item" href="{{ route('login') }}">Đăng nhập</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.createUser') }}">Đăng ký</a></li>
                                 @else
-
-                                    <li><a class="dropdown-item" href="{{ route('user.profile') }}">Thông tin cá nhân</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="{{ route('signout') }}">Thoát</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.profile') }}">Thông tin cá nhân</a></li>
+                                <li><a class="dropdown-item" href="{{ route('signout') }}">Đăng xuất</a></li>
                                 @endguest
                             </ul>
-
-
+                        </li>
                     </ul>
-
-
                 </div>
             </div>
     </nav>
