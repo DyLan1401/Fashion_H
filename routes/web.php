@@ -1,11 +1,5 @@
 <?php
+use App\Http\Controllers\ReviewController;
 
-use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-use App\Http\Controllers\HomeController;
-
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
