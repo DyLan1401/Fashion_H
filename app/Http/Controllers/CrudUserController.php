@@ -39,9 +39,11 @@ class CrudUserController extends Controller
 
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
-            
-           
-            return redirect('list');
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } else {
+                return redirect('/');
+            }
         }
 
         return back()->withErrors([
@@ -70,11 +72,10 @@ class CrudUserController extends Controller
         ]);
 
         $data = $request->all();
-        $check = User::create([
+        User::create([
             'name' => $data['name'],
-           
             'email' => $data['email'],
-            'password' =>\Illuminate\Support\Facades\Hash::make($data['password'])
+            'password' => Hash::make($data['password'])
         ]);
 
         return redirect("login");
@@ -95,7 +96,7 @@ class CrudUserController extends Controller
      */
     public function deleteUser(Request $request) {
         $user_id = $request->get('id');
-        $user = User::destroy($user_id);
+        User::destroy($user_id);
 
         return redirect("list")->withSuccess('You have signed-in');
     }
@@ -127,10 +128,10 @@ class CrudUserController extends Controller
        $user = User::find($input['id']);
        $user->name = $input['name'];
        $user->email = $input['email'];
-       $user->password = $input['password'];
+       $user->password = Hash::make($input['password']);
        $user->save();
 
-        return redirect("list")->withSuccess('You have signed-in');
+        return redirect('/')->withSuccess('Cập nhật thành công');
     }
 
     /**
@@ -164,7 +165,7 @@ class CrudUserController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         
         $request->validate([
             'name' => 'required|string|max:255',
@@ -184,5 +185,41 @@ class CrudUserController extends Controller
 
         return redirect()->route('user.profile')
                         ->with('success', 'Thông tin đã được cập nhật thành công!');
+    }
+
+    public function forgotPasswordForm()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email'
+        ]);
+
+        $user = User::where('email', $request->email)
+                   ->where('name', $request->name)
+                   ->first();
+
+        if (!$user) {
+            return back()->with('error', 'Không tìm thấy tài khoản với thông tin đã cung cấp.');
+        }
+
+        $newPassword = Str::random(8);
+        $user->password = Hash::make($newPassword);
+        $user->save();
+
+        try {
+            Mail::send('emails.reset-password', ['password' => $newPassword], function($message) use ($user) {
+                $message->to($user->email)
+                        ->subject('Mật khẩu mới của bạn');
+            });
+            return back()->with('success', 'Mật khẩu mới đã được gửi đến email của bạn.');
+        } catch (\Exception $e) {
+            Log::error('Failed to send email: ' . $e->getMessage());
+            return back()->with('error', 'Không thể gửi email. Vui lòng thử lại sau.');
+        }
     }
 }
