@@ -1,5 +1,4 @@
 <?php
-// app/Models/Post.php
 
 namespace App\Models;
 
@@ -8,19 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $table = 'posts';
-    public $timestamps = false; // Vì bạn dùng `ngay_tao` thủ công
+    protected $primaryKey = 'ma_bai_viet';
+    public $timestamps = false;
 
     protected $fillable = [
         'tieu_de',
         'noi_dung',
         'anh_dai_dien',
-        'trang_thai',
+        'trang_thai_bai_viet',
         'ma_tac_gia',
+        'ngay_tao',
     ];
 
     public function tacGia()
     {
-        return $this->belongsTo(User::class, 'ma_tac_gia');
+        return $this->belongsTo(User::class, 'ma_tac_gia', 'id');
     }
 }
-
