@@ -19,7 +19,11 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+<<<<<<< HEAD
             'phone' => '0123456789',
+=======
+     'phone' => '0123456789',
+>>>>>>> add_crud_contact
             'address' => 'Thanh pho ho chi minh',
         
         ]);

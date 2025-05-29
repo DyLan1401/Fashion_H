@@ -19,6 +19,7 @@
                 </div>
             </div>
 
+
         </div>
 
         {{-- The form section starts here --}}
@@ -45,6 +46,7 @@
 
                     <div class="row">
                         <div class="col-md-6">
+
                             <div class="mb-3">
                                 <label for="email" class="form-label">YOUR EMAIL</label>{{-- Update label text --}}
                                 <input type="email" class="form-control" id="email" name="email" required>
@@ -56,13 +58,14 @@
                                 <input type="phone" class="form-control" id="phone" name="phone" required>
                             </div>
                         </div>
-
+                        <<<<<<< HEAD=======>>>>>>> add_crud_contact
                     </div>
                     <div class="mb-3">
                         <label for="message" class="form-label">YOUR MESSAGE</label>{{-- Update label text --}}
                         <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-danger">Submit</button>
+                    
                 </form>
             </div>
         </div>

@@ -55,6 +55,12 @@
                                 <i class="fas fa-users me-2"></i> Quản lý người dùng
                             </a>
                         </li>
+                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}" 
+                               href="{{ route('admin.contacts.index') }}">
+                                <i class="fas fa-users me-2"></i> Quản lý liên hệ
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}" 
                                href="{{ route('admin.contacts.index') }}">
