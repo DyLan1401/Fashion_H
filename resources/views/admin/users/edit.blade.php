@@ -13,6 +13,17 @@
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
         </div>
+
+         <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="number" class="form-control" id="phone" name="phone" value="{{ $user->phone }}" required>
+        </div>
+
+         <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="address" class="form-control" id="address" name="address" value="{{ $user->address }}" required>
+        </div>
+
         <div class="mb-3">
             <label for="password" class="form-label">Mật khẩu mới</label>
             <input type="password" class="form-control" id="password" name="password" required>

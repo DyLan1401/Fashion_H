@@ -12,6 +12,7 @@
     @if(file_exists(public_path('js/scripts.js')))
         <script type="text/javascript" src="{{ asset('js/scripts.js') }}" defer></script>
     @endif
+
 </head>
 
 <body>
@@ -24,10 +25,20 @@
         </button>
         <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
             <!-- Phần giữa -->
-            <ul class="navbar-nav mx-auto">
-            <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                       Sản Phẩm
+            
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('home') }}">HOME</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">SHOP</a>
+                </li>
+
+                <!-- Sản phẩm Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        PRODUCTS
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                     <li class="nav-item">
@@ -45,7 +56,7 @@
                     <a class="nav-link" href="{{ route('signout') }}">Blogs</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Liên Hệ</a>
+                    <a class="nav-link" href={{ route('contact.form') }}>Liên Hệ</a>
                 </li>
             </ul>
             <!-- Phần bên phải -->
@@ -65,17 +76,20 @@
                             <li><a class="dropdown-item" href="{{ route('login') }}">Đăng nhập</a></li>
                             <li><a class="dropdown-item" href="{{ route('user.createUser') }}">Đăng kí</a></li>
                         @else
-                            <li><a class="dropdown-item" href="{{ route('user.readUser', ['id' => Auth::id()]) }}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.profile', ['id' => Auth::id()]) }}">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ route('signout') }}">Thoát</a></li>
                         @endguest
                     </ul>
-                </li>
+              
             </ul>
+
+            
         </div>
     </div>
 </nav>
 
     @yield('content')
+
 
 
 </body>

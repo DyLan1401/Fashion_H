@@ -170,12 +170,15 @@ class CrudUserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
+            
             'current_password' => 'required_with:new_password|current_password',
             'new_password' => 'nullable|min:8|confirmed',
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
 
         if ($request->filled('new_password')) {
             $user->password = bcrypt($request->new_password);
@@ -222,4 +225,68 @@ class CrudUserController extends Controller
             return back()->with('error', 'Không thể gửi email. Vui lòng thử lại sau.');
         }
     }
+
+
+
+    // public function signOut() {
+    //     \Illuminate\Support\Facades\Session::flush();
+    //     Auth::logout();
+    //     return redirect('login');
+    // }
+
+    // public function createUser()
+    // {
+    //     return view('auth.create');
+    // }
+
+    // public function postUser(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required',
+    //         'phone' => 'required',
+    //         'email' => 'required|email|unique:users',
+    //         'password' => 'required|min:6',
+    //     ]);
+    //     $data = $request->all();
+    //     User::create([
+    //         'name' => $data['name'],
+    //         'email' => $data['email'],
+    //         'password' => Hash::make($data['password']),
+    //          'phone' => $data['phone'],
+    //     'address' => $data['address'] ?? null, 
+    //     ]);
+    //     return redirect('login');
+    // }
+
+    // public function readUser(Request $request)
+    // {
+    //     $user_id = $request->get('id');
+    //     $user = User::find($user_id);
+    //     return view('auth.read', ['messi' => $user]);
+    // }
+
+    // public function updateUser(Request $request)
+    // {
+    //     $user_id = $request->get('id');
+    //     $user = User::find($user_id);
+    //     return view('auth.update', ['user' => $user]);
+    // }
+
+    // public function postUpdateUser(Request $request)
+    // {
+    //     $input = $request->all();
+    //     $request->validate([
+    //         'name' => 'required',
+    //         'email' => 'required|email|unique:users,id,'.$input['id'],
+    //         'password' => 'required|min:6',
+    //     ]);
+    //     $user = User::find($input['id']);
+    //     $user->name = $input['name'];
+    //     $user->email = $input['email'];
+    //     $user->phone = $input['phone'];
+    //     $user->address = $input['address'];
+    //     $user->password = Hash::make($input['password']);
+    //     $user->save();
+    //     return redirect('/')->withSuccess('Cập nhật thành công');
+    // }
 }
