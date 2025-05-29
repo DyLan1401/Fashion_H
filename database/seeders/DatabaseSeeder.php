@@ -19,8 +19,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+<<<<<<< HEAD
 
    $this->call([
     PostSeeder::class,
    ]);
 }}
+=======
+    }
+}
+>>>>>>> ecacb5fda7ea1230029f4979a24cb2f669c0b548

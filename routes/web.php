@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\PostController;
@@ -33,6 +34,10 @@ Route::get('list', [CrudUserController::class, 'listUser'])->name('user.list');
 Route::get('signout', [CrudUserController::class, 'signOut'])->name('signout');
 
 Route::resource('posts', PostController::class);
+=======
+
+use Illuminate\Support\Facades\Route;
+>>>>>>> ecacb5fda7ea1230029f4979a24cb2f669c0b548
 
 Route::get('/', function () {
     return view('welcome');
