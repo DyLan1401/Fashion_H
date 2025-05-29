@@ -156,4 +156,33 @@ class CrudUserController extends Controller
 
         return Redirect('login');
     }
+
+    public function profile()
+    {
+        return view('profile.index');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'current_password' => 'required_with:new_password|current_password',
+            'new_password' => 'nullable|min:8|confirmed',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->filled('new_password')) {
+            $user->password = bcrypt($request->new_password);
+        }
+
+        $user->save();
+
+        return redirect()->route('user.profile')
+                        ->with('success', 'Thông tin đã được cập nhật thành công!');
+    }
 }
