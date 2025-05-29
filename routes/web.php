@@ -1,4 +1,8 @@
 <?php
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RevenueController;
 
-Route::get('/order-history', [OrderController::class, 'history'])->name('orders.history');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/revenue', [RevenueController::class, 'index'])->name('revenue.index');
