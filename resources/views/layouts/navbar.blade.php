@@ -76,7 +76,8 @@
                             <li><a class="dropdown-item" href="{{ route('login') }}">Đăng nhập</a></li>
                             <li><a class="dropdown-item" href="{{ route('user.createUser') }}">Đăng kí</a></li>
                         @else
-                            <li><a class="dropdown-item" href="{{ route('user.profile', ['id' => Auth::id()]) }}">Profile</a></li>
+
+                            <li><a class="dropdown-item" href="{{ route('user.profile') }}">Thông tin cá nhân</a></li>
                             <li><a class="dropdown-item" href="{{ route('signout') }}">Thoát</a></li>
                         @endguest
                     </ul>
