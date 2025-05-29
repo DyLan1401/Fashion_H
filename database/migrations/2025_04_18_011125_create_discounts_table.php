@@ -9,14 +9,14 @@ class CreateDiscountsTable extends Migration
     public function up()
     {
         Schema::create('discounts', function (Blueprint $table) {
-            $table->unsignedBigInteger('discount_id')->primary();
-            $table->decimal('discount_percent', 8, 2);
-            $table->enum('discount_type', ['percentage', 'fixed']);
-            $table->decimal('min_order_value', 10, 2)->nullable();
-            $table->integer('usage_limit')->nullable();
-            $table->integer('usage_count')->default(0);
-            $table->dateTime('discount_expiry_date');
-            $table->timestamps();
+            $table->bigIncrements('id');
+            $table->decimal('phan_tram_giam_gia', 10, 2)->notNullable();
+            $table->enum('loai_giam_gia', ['percentage'])->default('percentage');
+            $table->decimal('gia_tri_don_hang_toi_thieu', 10, 2)->nullable();
+            $table->integer('so_lan_su_dung_toi_da')->nullable();
+            $table->integer('so_lan_da_su_dung')->default(0);
+            $table->dateTime('ngay_het_han_giam_gia')->notNullable();
+            $table->timestamp('ngay_tao')->useCurrent();
         });
     }
 

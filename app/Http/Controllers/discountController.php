@@ -18,63 +18,55 @@ class DiscountController extends Controller
         return view('discounts.create');
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
+{
+    $request->validate([
+        'phan_tram_giam_gia' => 'required|numeric|min:0|max:100',
+        'gia_tri_don_hang_toi_thieu' => 'nullable|numeric|min:0',
+        'so_lan_su_dung_toi_da' => 'nullable|integer|min:1',
+        'ngay_het_han_giam_gia' => 'required|date|after_or_equal:now', // Thay đổi ở đây
+    ]);
+
+    Discount::create([
+        'phan_tram_giam_gia' => $request->phan_tram_giam_gia,
+        'loai_giam_gia' => 'percentage',
+        'gia_tri_don_hang_toi_thieu' => $request->gia_tri_don_hang_toi_thieu,
+        'so_lan_su_dung_toi_da' => $request->so_lan_su_dung_toi_da,
+        'so_lan_da_su_dung' => 0,
+        'ngay_het_han_giam_gia' => $request->ngay_het_han_giam_gia,
+        'ngay_tao' => now(),
+    ]);
+
+    return redirect()->route('discounts.index')->with('success', 'Tạo mã giảm giá thành công!');
+}
+
+    public function edit(Discount $discount)
+{
+    return view('discounts.edit', compact('discount'));
+}
+
+    public function update(Request $request, Discount $discount)
     {
         $request->validate([
-            'discount_id' => 'required|unique:discounts,discount_id',
-            'discount_percent' => 'required|numeric|min:0',
-            'discount_type' => 'required|in:percentage,fixed',
-            'min_order_value' => 'nullable|numeric|min:0',
-            'usage_limit' => 'nullable|integer|min:1',
-            'discount_expiry_date' => 'required|date',
+            'phan_tram_giam_gia' => 'required|numeric|min:0|max:100',
+            'gia_tri_don_hang_toi_thieu' => 'nullable|numeric|min:0',
+            'so_lan_su_dung_toi_da' => 'nullable|integer|min:1',
+            'ngay_het_han_giam_gia' => 'required|date|after:now',
         ]);
 
-        Discount::create([
-            'discount_id' => $request->discount_id,
-            'discount_percent' => $request->discount_percent,
-            'discount_type' => $request->discount_type,
-            'min_order_value' => $request->min_order_value,
-            'usage_limit' => $request->usage_limit,
-            'usage_count' => 0,
-            'discount_expiry_date' => $request->discount_expiry_date,
-        ]);
-
-        return redirect()->route('discounts.index')->with('success', 'Discount created successfully.');
-    }
-
-    public function edit($id)
-    {
-        $discount = Discount::findOrFail($id);
-        return view('discounts.update', compact('discount'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'discount_percent' => 'required|numeric|min:0',
-            'discount_type' => 'required|in:percentage,fixed',
-            'min_order_value' => 'nullable|numeric|min:0',
-            'usage_limit' => 'nullable|integer|min:1',
-            'discount_expiry_date' => 'required|date',
-        ]);
-
-        $discount = Discount::findOrFail($id);
         $discount->update([
-            'discount_percent' => $request->discount_percent,
-            'discount_type' => $request->discount_type,
-            'min_order_value' => $request->min_order_value,
-            'usage_limit' => $request->usage_limit,
-            'discount_expiry_date' => $request->discount_expiry_date,
+            'phan_tram_giam_gia' => $request->phan_tram_giam_gia,
+            'gia_tri_don_hang_toi_thieu' => $request->gia_tri_don_hang_toi_thieu,
+            'so_lan_su_dung_toi_da' => $request->so_lan_su_dung_toi_da,
+            'ngay_het_han_giam_gia' => $request->ngay_het_han_giam_gia,
         ]);
 
-        return redirect()->route('discounts.index')->with('success', 'Discount updated successfully.');
+        return redirect()->route('discounts.index')->with('success', 'Cập nhật mã giảm giá thành công!');
     }
 
-    public function destroy($id)
+    public function destroy(Discount $discount)
     {
-        $discount = Discount::findOrFail($id);
         $discount->delete();
-
-        return redirect()->route('discounts.index')->with('success', 'Discount deleted successfully.');
+        return redirect()->route('discounts.index')->with('success', 'Xóa mã giảm giá thành công!');
     }
 }

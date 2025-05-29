@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Discount extends Model
 {
     protected $table = 'discounts';
-    protected $primaryKey = 'discount_id';
-    public $incrementing = false;
+    public $timestamps = false; // Tắt timestamps mặc định
+    protected $dates = ['ngay_tao', 'ngay_het_han_giam_gia'];
     protected $fillable = [
-        'discount_id', 'discount_percent', 'discount_type', 'min_order_value',
-        'usage_limit', 'usage_count', 'discount_expiry_date'
+        'phan_tram_giam_gia',
+        'loai_giam_gia',
+        'gia_tri_don_hang_toi_thieu',
+        'so_lan_su_dung_toi_da',
+        'so_lan_da_su_dung',
+        'ngay_het_han_giam_gia',
+        'ngay_tao',
     ];
 }
