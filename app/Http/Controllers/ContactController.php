@@ -10,9 +10,17 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = Contact::latest()->paginate(10);
+        $query = Contact::query();
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%") ;
+            });
+        }
+        $contacts = $query->latest()->paginate(10)->withQueryString();
         return view('admin.contacts.index', compact('contacts'));
     }
 
