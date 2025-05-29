@@ -2,45 +2,50 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\ContactController;
 
-// Routes cho User
+// Public Routes
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('login', [UserController::class, 'login'])->name('login');
-Route::post('login', [UserController::class, 'authUser'])->name('user.authUser');
-Route::get('signout', [UserController::class, 'signOut'])->name('signout');
-Route::get('forgot-password', [UserController::class, 'forgotPasswordForm'])->name('user.forgotPasswordForm');
-Route::post('forgot-password', [UserController::class, 'forgotPassword'])->name('user.forgotPassword');
+// Authentication Routes
+Route::get('login', [CrudUserController::class, 'login'])->name('login');
+Route::post('login', [CrudUserController::class, 'authUser'])->name('user.authUser');
+Route::get('signout', [CrudUserController::class, 'signOut'])->name('signout');
+Route::get('forgot-password', [CrudUserController::class, 'forgotPasswordForm'])->name('user.forgotPasswordForm');
+Route::post('forgot-password', [CrudUserController::class, 'forgotPassword'])->name('user.forgotPassword');
 
-Route::get('create', [UserController::class, 'createUser'])->name('user.createUser');
-Route::post('create', [UserController::class, 'postUser'])->name('user.postUser');
-Route::get('read', [UserController::class, 'readUser'])->name('user.readUser');
-Route::get('update', [UserController::class, 'updateUser'])->name('user.updateUser');
-Route::post('update', [UserController::class, 'postUpdateUser'])->name('user.postUpdateUser');
+// User Registration Routes
+Route::get('create', [CrudUserController::class, 'createUser'])->name('user.createUser');
+Route::post('create', [CrudUserController::class, 'postUser'])->name('user.postUser');
+Route::get('read', [CrudUserController::class, 'readUser'])->name('user.readUser');
+Route::get('update', [CrudUserController::class, 'updateUser'])->name('user.updateUser');
+Route::post('update', [CrudUserController::class, 'postUpdateUser'])->name('user.postUpdateUser');
 
-// Form liên hệ cho người dùng
+// Contact Form Routes
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-// Routes cho Admin
-Route::group(['middleware' => ['web', 'auth', 'admin']], function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/admin/manageUser', [AdminController::class, 'listUser'])->name('admin.users.list');
-    Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('admin.users.create');
-    Route::post('/admin/users/create', [AdminController::class, 'postUser'])->name('admin.users.store');
-    Route::get('/admin/users/{id}', [AdminController::class, 'readUser'])->name('admin.users.show');
-    Route::get('/admin/users/{id}/edit', [AdminController::class, 'updateUser'])->name('admin.users.edit');
-    Route::post('/admin/users/{id}/edit', [AdminController::class, 'postUpdateUser'])->name('admin.users.update');
-    Route::get('/admin/users/{id}/delete', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
-});
+// Admin Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    
+    // User Management
+    Route::get('/users', [AdminController::class, 'listUser'])->name('users.list');
+    Route::get('/users/create', [AdminController::class, 'createUser'])->name('users.create');
+    Route::post('/users/create', [AdminController::class, 'postUser'])->name('users.store');
+    Route::get('/users/{id}', [AdminController::class, 'readUser'])->name('users.show');
+    Route::get('/users/{id}/edit', [AdminController::class, 'updateUser'])->name('users.edit');
+    Route::post('/users/{id}/edit', [AdminController::class, 'postUpdateUser'])->name('users.update');
+    Route::get('/users/{id}/delete', [AdminController::class, 'deleteUser'])->name('users.delete');
 
-// Admin quản lý contact
-Route::middleware(['web', 'auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
+    // Contact Management
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 });
 
 

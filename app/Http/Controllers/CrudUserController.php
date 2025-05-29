@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class UserController extends Controller
+class CrudUserController extends Controller
 {
     public function login()
     {
@@ -24,15 +24,16 @@ class UserController extends Controller
             'password' => 'required'
         ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        if ($user && Hash::check($request->password, $user->password)) {
-            Auth::login($user);
+        $credentials = $request->only('email', 'password');
+        
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            
             if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard'); // Sử dụng route name thay vì đường dẫn trực tiếp
-            } else {
-                return redirect('/');
+                return redirect()->route('admin.dashboard');
             }
+            
+            return redirect()->route('home');
         }
 
         return back()->withErrors([
