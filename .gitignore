@@ -17,17 +17,19 @@ bin-release/
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
-
 /.phpunit.cache
 /node_modules
 /public/build
 /public/hot
 /public/storage
 /storage/*.key
+
+/storage/pail
 /vendor
 .env
 .env.backup
 .env.production
+<<<<<<< HEAD
 Homestead.json
 Homestead.yaml
 auth.json
@@ -37,3 +39,16 @@ yarn-error.log
 /.idea
 /.vscode
 
+
+.phpactor.json
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/auth.json
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
