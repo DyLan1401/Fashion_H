@@ -2,71 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Discount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Models\Discount;
 
 class DiscountController extends Controller
 {
-    public function index()
+    public function showApplyForm()
     {
-        $discounts = Discount::all();
-        return view('discounts.index', compact('discounts'));
+        return view('discounts.apply');
     }
 
-    public function create()
-    {
-        return view('discounts.create');
-    }
-
-   public function store(Request $request)
-{
-    $request->validate([
-        'phan_tram_giam_gia' => 'required|numeric|min:0|max:100',
-        'gia_tri_don_hang_toi_thieu' => 'nullable|numeric|min:0',
-        'so_lan_su_dung_toi_da' => 'nullable|integer|min:1',
-        'ngay_het_han_giam_gia' => 'required|date|after_or_equal:now', // Thay đổi ở đây
-    ]);
-
-    Discount::create([
-        'phan_tram_giam_gia' => $request->phan_tram_giam_gia,
-        'loai_giam_gia' => 'percentage',
-        'gia_tri_don_hang_toi_thieu' => $request->gia_tri_don_hang_toi_thieu,
-        'so_lan_su_dung_toi_da' => $request->so_lan_su_dung_toi_da,
-        'so_lan_da_su_dung' => 0,
-        'ngay_het_han_giam_gia' => $request->ngay_het_han_giam_gia,
-        'ngay_tao' => now(),
-    ]);
-
-    return redirect()->route('discounts.index')->with('success', 'Tạo mã giảm giá thành công!');
-}
-
-    public function edit(Discount $discount)
-{
-    return view('discounts.edit', compact('discount'));
-}
-
-    public function update(Request $request, Discount $discount)
+    public function applyDiscount(Request $request)
     {
         $request->validate([
-            'phan_tram_giam_gia' => 'required|numeric|min:0|max:100',
-            'gia_tri_don_hang_toi_thieu' => 'nullable|numeric|min:0',
-            'so_lan_su_dung_toi_da' => 'nullable|integer|min:1',
-            'ngay_het_han_giam_gia' => 'required|date|after:now',
+            'code' => 'required',
+            'total' => 'required|numeric|min:1',
         ]);
 
-        $discount->update([
-            'phan_tram_giam_gia' => $request->phan_tram_giam_gia,
-            'gia_tri_don_hang_toi_thieu' => $request->gia_tri_don_hang_toi_thieu,
-            'so_lan_su_dung_toi_da' => $request->so_lan_su_dung_toi_da,
-            'ngay_het_han_giam_gia' => $request->ngay_het_han_giam_gia,
+        $code = $request->input('code');
+        $total = $request->input('total');
+
+        // Tìm mã giảm giá theo ID (ở đây ID được dùng làm mã)
+        $discount = Discount::find($code);
+
+        if (!$discount) {
+            return back()->with('error', 'Mã giảm giá không tồn tại.');
+        }
+
+        // Kiểm tra ngày hết hạn
+        if (Carbon::now()->greaterThan($discount->ngay_het_han_giam_gia)) {
+            return back()->with('error', 'Mã giảm giá đã hết hạn.');
+        }
+
+        // Kiểm tra số lần sử dụng tối đa
+        if ($discount->so_lan_su_dung_toi_da && $discount->so_lan_da_su_dung >= $discount->so_lan_su_dung_toi_da) {
+            return back()->with('error', 'Mã giảm giá đã được sử dụng tối đa.');
+        }
+
+        // Kiểm tra điều kiện tổng đơn hàng
+        if ($discount->gia_tri_don_hang_toi_thieu && $total < $discount->gia_tri_don_hang_toi_thieu) {
+            return back()->with('error', 'Đơn hàng chưa đủ điều kiện để áp mã.');
+        }
+
+        // Tính số tiền giảm
+        $discountAmount = $discount->loai_giam_gia === 'percentage'
+            ? ($total * $discount->phan_tram_giam_gia / 100)
+            : $discount->phan_tram_giam_gia;
+
+        $discountAmount = min($discountAmount, $total); // Không giảm quá tổng đơn hàng
+
+        return back()->with([
+            'success' => 'Áp mã thành công!',
+            'discount' => $discountAmount,
+            'total_after_discount' => $total - $discountAmount,
         ]);
-
-        return redirect()->route('discounts.index')->with('success', 'Cập nhật mã giảm giá thành công!');
-    }
-
-    public function destroy(Discount $discount)
-    {
-        $discount->delete();
-        return redirect()->route('discounts.index')->with('success', 'Xóa mã giảm giá thành công!');
     }
 }
