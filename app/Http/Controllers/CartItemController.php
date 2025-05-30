@@ -108,7 +108,6 @@ class CartItemController extends Controller
             return redirect()->route('user.cart.index')
                 ->with('success', 'Product added to cart successfully');
         } catch (\Exception $e) {
-            \Log::error('Cart Error: ' . $e->getMessage());
             return redirect()->back()
                 ->with('error', 'Failed to add product to cart: ' . $e->getMessage());
         }

@@ -65,7 +65,7 @@
                                         <td class="product-remove">
                                             <form action="{{ route('user.cart.remove', $item->id) }}" method="POST" style="display: inline;">
                                                 @csrf
-                                                <button type="submit" class="btn btn-link p-0" onclick="return confirm('Are you sure you want to remove this item?')">
+                                                <button type="submit" class="btn btn-link p-0" onclick="return confirm('Bạn muốn xóa sản phẩm ra khỏi giỏ hàng không?')">
                                                     <i class="fa fa-times"></i>
                                                 </button>
                                             </form>
@@ -75,27 +75,13 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="coupon-all">
-                                    <div class="coupon">
-                                        <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code"
-                                            type="text">
-                                        <button class="btn theme-btn-2" name="apply_coupon" type="submit">Apply coupon</button>
-                                    </div>
-                                    <div class="coupon2">
-                                        <button class="btn theme-btn" type="submit">Update Cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </form>
                     <div class="row">
                         <div class="col-md-5 ml-auto">
                             <div class="cart-page-total">
                                 <h2>Cart totals</h2>
                                 <ul class="mb-20">
-                                    <li>Subtotal <span>0</span></li>
                                     <li>Total <span>{{ $total }}</span></li>
                                 </ul>
                                 <a class="btn theme-btn" href="#">Proceed to checkout</a>
