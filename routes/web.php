@@ -15,6 +15,7 @@ Route::get('admin',[ProductsController::class, 'getProductList'])->name('admin.g
 // Cart routes
 Route::prefix('cart')->name('user.cart.')->group(function () {
     Route::get('/', [CartItemController::class, 'index'])->name('index');
+    Route::post('/store', [CartItemController::class, 'store'])->name('store');
     Route::post('/update-quantity', [CartItemController::class, 'updateQuantity'])->name('updateQuantity');
     Route::post('/remove/{id}', [CartItemController::class, 'remove'])->name('remove');
 });

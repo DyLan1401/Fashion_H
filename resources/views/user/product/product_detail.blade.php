@@ -69,14 +69,18 @@
 
                             <div class="product-action-details variant-item">
                                 <div class="product-details-action">
-                                    <form action="#">
+                                    <form action="{{ route('user.cart.store') }}" method="POST">
+                                        @csrf
                                         <div class="plus-minus">
-                                            <div class="cart-plus-minus"><input type="text" value="1" /></div>
+                                            <div class="cart-plus-minus">
+                                                <input type="number" name="quantity" value="1" min="1" />
+                                            </div>
                                         </div>
-                                        <button class="details-action-icon" type="submit"><i class="fas fa-heart"></i></button>
-                                        <button class="details-action-icon" type="submit"><i class="fas fa-hourglass"></i></button>
+                                        <button class="details-action-icon" type="button"><i class="fas fa-heart"></i></button>
+                                        <button class="details-action-icon" type="button"><i class="fas fa-hourglass"></i></button>
                                         <div class="details-cart mt-40">
-                                            <button class="btn theme-btn">purchase now</button>
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <button type="submit" class="btn theme-btn">Add to Cart</button>
                                         </div>
                                     </form>
                                 </div>

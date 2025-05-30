@@ -76,4 +76,41 @@ class CartItemController extends Controller
                 ->with('error', 'Failed to remove item from cart');
         }
     }
+
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                'product_id' => 'required|exists:products,id',
+                'quantity' => 'required|integer|min:1'
+            ]);
+
+            $userID = Auth::id() ?? 1;
+
+            // Check if product already exists in cart
+            $existingCartItem = CartItem::where('user_id', $userID)
+                ->where('product_id', $request->product_id)
+                ->first();
+
+            if ($existingCartItem) {
+                // Update quantity if product exists
+                $existingCartItem->quantity += $request->quantity;
+                $existingCartItem->save();
+            } else {
+                // Create new cart item if product doesn't exist
+                CartItem::create([
+                    'user_id' => $userID,
+                    'product_id' => $request->product_id,
+                    'quantity' => $request->quantity
+                ]);
+            }
+
+            return redirect()->route('user.cart.index')
+                ->with('success', 'Product added to cart successfully');
+        } catch (\Exception $e) {
+            \Log::error('Cart Error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Failed to add product to cart: ' . $e->getMessage());
+        }
+    }
 }
