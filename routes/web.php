@@ -82,7 +82,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // User Management Routes
     Route::get('/users', [AdminController::class, 'listUser'])->name('users.list');
     Route::get('/users/create', [AdminController::class, 'createUser'])->name('users.create');
-    Route::post('/users/create', [AdminController::class, 'postUser'])->name('users.store');
+    Route::post('/users', [CrudUserController::class, 'storeUser'])->name('users.store');
     Route::get('/users/{id}', [AdminController::class, 'readUser'])->name('users.show');
     Route::get('/users/{id}/edit', [AdminController::class, 'updateUser'])->name('users.edit');
     Route::post('/users/{id}/edit', [AdminController::class, 'postUpdateUser'])->name('users.update');

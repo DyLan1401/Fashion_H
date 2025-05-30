@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 
 /**
  * CRUD User controller
@@ -37,7 +38,7 @@ class CrudUserController extends Controller
 
         $credentials = $request->only('email', 'password');
         Log::info('Login attempt:', ['email' => $request->email]);
-        
+
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             Log::info('User authenticated:', [
@@ -46,12 +47,12 @@ class CrudUserController extends Controller
                 'role' => $user->role,
                 'role_type' => gettype($user->role)
             ]);
-            
+
             if (strtolower($user->role) === 'admin') {
                 Log::info('Admin login successful, redirecting to dashboard');
                 return redirect()->route('admin.dashboard');
             }
-            
+
             Log::info('Regular user login successful, redirecting to home');
             return redirect()->route('home');
         }
@@ -76,10 +77,29 @@ class CrudUserController extends Controller
     public function postUser(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
-            'email' => 'required|email|unique:users|trim',
-            'password' => 'required|min:6|max:16|trim',
-            'phone' => 'required|min:10|max:12|trim',
+            'name' => [
+                'required',
+                'regex:/^[\p{L}]+( [\p{L}]+)*$/u',
+                new \App\Rules\NoLeadingOrTrailingSpaces
+            ],
+            'password' => [
+                'required',
+                'min:6',
+                'max:16',
+                new \App\Rules\NoLeadingOrTrailingSpaces
+            ],
+            'phone' => [
+                'required',
+                'min:10',
+                'max:12',
+                new \App\Rules\NoLeadingOrTrailingSpaces
+            ],
+            'address' => [
+                'required',
+                'string',
+                'max:255',
+                new \App\Rules\NoLeadingOrTrailingSpaces
+            ]
         ]);
 
         User::create([
@@ -127,20 +147,44 @@ class CrudUserController extends Controller
     public function postUpdateUser(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
-            'email' => 'required|email|unique:users,email,|trim' . $request->id,
-            'password' => 'required|min:6|max:16|trim',
-           'phone' => 'required|min:10|max:12|trim',
+            'name' => [
+                'required',
+                'regex:/^[\p{L}]+(?: [\p{L}]+)*$/u',
+                new \App\Rules\NoLeadingOrTrailingSpaces
+            ],
+            'email' => [
+                'required',
+                'email',
+                'unique:users,email,' . $request->id, // ⚠️ sửa 'emal' thành 'email'
+                new \App\Rules\NoLeadingOrTrailingSpaces
+            ],
+            'password' => [
+                'required',
+                'min:6',
+                'max:16',
+                new \App\Rules\NoLeadingOrTrailingSpaces
+            ],
+            'phone' => [
+                'required',
+                'min:10',
+                'max:12',
+                new \App\Rules\NoLeadingOrTrailingSpaces
+            ]
         ]);
 
         $user = User::findOrFail($request->id);
-        $user->fill([
+        $updateData = [
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'address' => $request->address
-        ])->save();
+        ];
+
+        if ($request->filled('new_password')) {
+            $updateData['password'] = Hash::make($request->new_password);
+        }
+
+        DB::table('users')->where('id', $user->id)->update($updateData);
 
         return redirect()->route('home')->with('success', 'Cập nhật thành công!');
     }
@@ -151,7 +195,7 @@ class CrudUserController extends Controller
     public function listUser(): View
     {
         $users = User::all();
-        return view('auth.list', compact('users'));
+        return view('admin.manageUser', compact('users'));
     }
 
     /**
@@ -177,27 +221,31 @@ class CrudUserController extends Controller
     public function updateProfile(Request $request): RedirectResponse
     {
         $user = Auth::user();
-        
+
         $request->validate([
-            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
-            'email' => 'required|email|unique:users,email|trim,' . $user->id,
-            'current_password' => 'required_with:new_password|current_password',
-            'new_password' => 'nullable|min:6|confirmed',
+            'name' => ['required', 'regex:/^[\pL\s]+$/u', new \App\Rules\NoLeadingOrTrailingSpaces],
+            'email' => ['required', 'email', 'unique:users,email,' . $user->id],
+            'phone' => ['required', 'min:10', 'max:12'],
+            'address' => ['nullable'],
+            'current_password' => ['required_with:new_password', 'current_password'],
+            'new_password' => ['nullable', 'min:6', 'confirmed'],
         ]);
 
-        $user->fill([
+        $updateData = [
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address
-        ])->save();
+        ];
 
         if ($request->filled('new_password')) {
-            $user->fill(['password' => Hash::make($request->new_password)])->save();
+            $updateData['password'] = Hash::make($request->new_password);
         }
 
+        DB::table('users')->where('id', $user->id)->update($updateData);
+
         return redirect()->route('user.profile')
-                        ->with('success', 'Thông tin đã được cập nhật thành công!');
+            ->with('success', 'Thông tin đã được cập nhật thành công!');
     }
 
     /**
@@ -214,13 +262,14 @@ class CrudUserController extends Controller
     public function forgotPassword(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
-            'email' => 'required|email|trim'
+            ['name' => 'required|regex:/^[\pL\s]+$/u ', new \App\Rules\NoLeadingOrTrailingSpaces],
+
+            ['email' => 'required|email ', new \App\Rules\NoLeadingOrTrailingSpaces]
         ]);
 
         $user = User::where('email', $request->email)
-                   ->where('name', $request->name)
-                   ->first();
+            ->where('name', $request->name)
+            ->first();
 
         if (!$user) {
             return back()->with('error', 'Không tìm thấy tài khoản với thông tin đã cung cấp.');
@@ -230,14 +279,88 @@ class CrudUserController extends Controller
         $user->fill(['password' => Hash::make($newPassword)])->save();
 
         try {
-            Mail::send('emails.reset-password', ['password' => $newPassword], function($message) use ($user) {
+            Mail::send('emails.reset-password', ['password' => $newPassword], function ($message) use ($user) {
                 $message->to($user->email)
-                        ->subject('Mật khẩu mới của bạn');
+                    ->subject('Mật khẩu mới của bạn');
             });
             return back()->with('success', 'Mật khẩu mới đã được gửi đến email của bạn.');
         } catch (\Exception $e) {
             Log::error('Failed to send email: ' . $e->getMessage());
             return back()->with('error', 'Không thể gửi email. Vui lòng thử lại sau.');
         }
+    }
+
+    /**
+     * Store new user
+     */
+    public function storeUser(Request $request): RedirectResponse
+    {
+        try {
+            $request->validate([
+                'name' => [
+                    'required',
+                    'regex:/^[\p{L}]+( [\p{L}]+)*$/u',
+                    new \App\Rules\NoLeadingOrTrailingSpaces
+                ],
+                'email' => [
+                    'required',
+                    'email',
+                    'unique:users',
+                    new \App\Rules\NoLeadingOrTrailingSpaces
+                ],
+                'password' => [
+                    'required',
+                    'min:6',
+                    'max:16',
+                    new \App\Rules\NoLeadingOrTrailingSpaces
+                ],
+                'phone' => [
+                    'required',
+                    'min:10',
+                    'max:12',
+                    new \App\Rules\NoLeadingOrTrailingSpaces
+                ],
+                'address' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    new \App\Rules\NoLeadingOrTrailingSpaces
+                ],
+                'role' => [
+                    'required',
+                    'in:admin,user'
+                ]
+            ]);
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'role' => $request->role
+            ]);
+
+            if (!$user) {
+                throw new \Exception('Không thể tạo người dùng mới');
+            }
+
+            return redirect()->route('admin.users.list')
+                ->with('success', 'Thêm người dùng thành công!');
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Lỗi khi thêm người dùng: ' . $e->getMessage());
+            return back()
+                ->withInput()
+                ->with('error', 'Có lỗi xảy ra khi thêm người dùng. Vui lòng thử lại.');
+        }
+    }
+
+    /**
+     * Show create user form
+     */
+    public function showCreateForm(): View
+    {
+        return view('auth.create');
     }
 }
