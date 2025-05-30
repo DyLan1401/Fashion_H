@@ -3,108 +3,103 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Brand;
+
+use App\Models\Products;
+use App\Models\Categories;
+use App\Models\Product_types;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Redirect;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
-        return View::make('admin.products.index', compact('products'));
-    }
 
-    public function create()
-    {
-        $categories = Category::all();
-        $brands = Brand::all();
-        return View::make('admin.products.create', compact('categories', 'brands'));
+        $products = Products::with(['Category', 'Type'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        $categories = Categories::all();
+        $productTypes = Product_types::all();
+        
+        return view('admin.product.index', compact('products', 'categories', 'productTypes'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+
+        $validated = $request->validate([
+            'product_name' => 'required|string|max:255',
+            'product_description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:active,inactive',
+            'type_id' => 'required|exists:product_types,id',
+            'product_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'color' => 'required|string|in:Blue,Green,Orange,Navy,Pinkish,Vista',
+            'size' => 'required|string|in:S,M,L,XL,XXL'
         ]);
 
-        $data = $request->all();
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/products', $imageName);
-            $data['image'] = $imageName;
+        if ($request->hasFile('product_image')) {
+            $path = $request->file('product_image')->store('products', 'public');
+            $validated['product_image'] = $path;
         }
 
-        Product::create($data);
+        Products::create($validated);
 
-        return Redirect::route('admin.products.index')
-            ->with('success', 'Product created successfully');
-    }
-
-    public function edit($id)
-    {
-        $product = Product::findOrFail($id);
-        $categories = Category::all();
-        $brands = Brand::all();
-        return View::make('admin.products.edit', compact('product', 'categories', 'brands'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:active,inactive',
-        ]);
-
-        $data = $request->all();
-
-        if ($request->hasFile('image')) {
-            // Delete old image
-            if ($product->image) {
-                Storage::delete('public/products/' . $product->image);
-            }
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/products', $imageName);
-            $data['image'] = $imageName;
-        }
-
-        $product->update($data);
-
-        return Redirect::route('admin.products.index')
-            ->with('success', 'Product updated successfully');
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Sản phẩm đã được thêm thành công.');
     }
 
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
-        
-        // Delete product image
-        if ($product->image) {
-            Storage::delete('public/products/' . $product->image);
-        }
 
+        $product = Products::findOrFail($id);
         $product->delete();
 
-        return Redirect::route('admin.products.index')
-            ->with('success', 'Product deleted successfully');
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Sản phẩm đã được xóa thành công.');
+    }
+
+    public function edit($id)
+    {
+        $product = Products::findOrFail($id);
+        $categories = Categories::all();
+        $productTypes = Product_types::all();
+        
+        return view('admin.product.edit', compact('product', 'categories', 'productTypes'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $product = Products::findOrFail($id);
+
+        $validated = $request->validate([
+            'product_name' => 'required|string|max:255',
+            'product_description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'type_id' => 'required|exists:product_types,id',
+            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'color' => 'required|string|in:Blue,Green,Orange,Navy,Pinkish,Vista',
+            'size' => 'required|string|in:S,M,L,XL,XXL'
+        ]);
+
+        // Handle image upload if a new image is provided
+        if ($request->hasFile('product_image')) {
+            // Delete old image
+            if ($product->product_image) {
+                Storage::disk('public')->delete($product->product_image);
+            }
+            // Store new image
+            $path = $request->file('product_image')->store('products', 'public');
+            $validated['product_image'] = $path;
+        }
+
+        $product->update($validated);
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Sản phẩm đã được cập nhật thành công.');
+
     }
 } 
