@@ -36,9 +36,9 @@ class AdminController extends Controller
     public function postUser(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
+            'email' => 'required|email|unique:users|trim',
+            'password' => 'required|min:6|max:16|trim',
         ]);
         $data = $request->all();
         User::create([
@@ -67,9 +67,9 @@ class AdminController extends Controller
     {
         $input = $request->all();
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'required|min:6',
+            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
+            'email' => 'required|email|unique:users,email,|trim'.$id,
+            'password' => 'required|min:6|trim',
         ]);
         $user = User::find($id);
         $user->name = $input['name'];

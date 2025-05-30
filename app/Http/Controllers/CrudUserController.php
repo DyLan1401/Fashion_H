@@ -76,10 +76,10 @@ class CrudUserController extends Controller
     public function postUser(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'phone' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
+            'email' => 'required|email|unique:users|trim',
+            'password' => 'required|min:6|max:16|trim',
+            'phone' => 'required|min:10|max:12|trim',
         ]);
 
         User::create([
@@ -127,10 +127,10 @@ class CrudUserController extends Controller
     public function postUpdateUser(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $request->id,
-            'password' => 'required|min:6',
-            'phone' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
+            'email' => 'required|email|unique:users,email,|trim' . $request->id,
+            'password' => 'required|min:6|max:16|trim',
+           'phone' => 'required|min:10|max:12|trim',
         ]);
 
         $user = User::findOrFail($request->id);
@@ -179,10 +179,10 @@ class CrudUserController extends Controller
         $user = Auth::user();
         
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
+            'email' => 'required|email|unique:users,email|trim,' . $user->id,
             'current_password' => 'required_with:new_password|current_password',
-            'new_password' => 'nullable|min:8|confirmed',
+            'new_password' => 'nullable|min:6|confirmed',
         ]);
 
         $user->fill([
@@ -214,8 +214,8 @@ class CrudUserController extends Controller
     public function forgotPassword(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email'
+            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
+            'email' => 'required|email|trim'
         ]);
 
         $user = User::where('email', $request->email)

@@ -38,10 +38,10 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'message' => 'required',
+            'name' => 'required|regex:/^[\pL\s]+$/u|trim',
+            'email' => 'required|email|trim',
+            'phone' => 'required|min:10|max:12|trim',
+            'message' => 'required|string|max:255|trim',
         ]);
         Contact::create($request->only('name', 'email', 'message','phone'));
         return redirect()->route('contact.form')->with('success', 'Gửi liên hệ thành công!');

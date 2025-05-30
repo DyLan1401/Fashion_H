@@ -31,8 +31,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href={{ route('admin.contacts.index') }}>
-                            Quản lý liên hệ
+                    <a class="nav-link" href="{{ route('admin.contacts.index') }}">                            Quản lý liên hệ
                         </a>
                     </li>
                     <li class="nav-item">
