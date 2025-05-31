@@ -48,8 +48,10 @@ class DatabaseSeeder extends Seeder
          ContactSeeder::class,
         AdminUserSeeder::class,
         // PostSeeder::class,
-        DiscountSeeder::class
+        ProductSeeder::class,
+        DiscountSeeder::class,
+        CategoriesSeeder::class
         ]);
  
  
-    }
+    }}

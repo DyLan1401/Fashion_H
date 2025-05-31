@@ -7,56 +7,24 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ApplyDiscountController;
-
-
-use App\Http\Controllers\ApplyDis;
-Route::get('/discount/apply', [ApplyDiscountController::class, 'showApplyForm'])->name('discounts.showForm');
-Route::post('/discount/apply', [ApplyDiscountController::class, 'applyDiscount'])->name('discounts.apply');
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\ProductController;
 
 // Public Routes
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-// */
-
-// Route::get('dashboard', [CrudUserController::class, 'dashboard']);
-
-// Route::get('login', [CrudUserController::class, 'login'])->name('login');
-// Route::post('login', [CrudUserController::class, 'authUser'])->name('user.authUser');
-
-// Route::get('create', [CrudUserController::class, 'createUser'])->name('user.createUser');
-// Route::post('create', [CrudUserController::class, 'postUser'])->name('user.postUser');
-
-// Route::get('read', [CrudUserController::class, 'readUser'])->name('user.readUser');
-
-// Route::get('delete', [CrudUserController::class, 'deleteUser'])->name('user.deleteUser');
-
-// Route::get('update', [CrudUserController::class, 'updateUser'])->name('user.updateUser');
-// Route::post('update', [CrudUserController::class, 'postUpdateUser'])->name('user.postUpdateUser');
-
-// Route::get('list', [CrudUserController::class, 'listUser'])->name('user.list');
-// //Roles
-// Route::get('role', action: [RoleController::class, 'role'])->name('user.role');
-// //profile
-// Route::get('/profile/{id}', [ProfileUserController::class, 'show'])->name('profile.show');
-// //order
-// Route::get('/orders/user/{id}', [OrderController::class, 'ordersByUser'])->name('orders.byUser');
-
-// Route::get('signout', [CrudUserController::class, 'signOut'])->name('signout');
-
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+// Shop Routes
+Route::get('shop', [ProductsController::class, 'index'])->name('shop');
+Route::get('shop/{id}', [ProductsController::class, 'show'])->name('show');
+
+// Contact Routes
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -68,24 +36,38 @@ Route::middleware('guest')->group(function () {
     Route::post('forgot-password', [CrudUserController::class, 'forgotPassword'])->name('user.forgotPassword');
 });
 
-// Authenticated Routes
+// Social Authentication Routes
+Route::controller(SocialiteController::class)->group(function () {
+    Route::get('auth/{provider}/redirect', 'authProviderRedirect')->name('auth.redirection');
+    Route::get('auth/{provider}/callback', 'socialAuthentication')->name('auth.callback');
+});
+
+// Authenticated User Routes
 Route::middleware('auth')->group(function () {
     Route::get('signout', [CrudUserController::class, 'signOut'])->name('signout');
     Route::get('profile', [CrudUserController::class, 'profile'])->name('user.profile');
     Route::post('profile', [CrudUserController::class, 'updateProfile'])->name('user.updateProfile');
     Route::get('list', [CrudUserController::class, 'listUser'])->name('user.list');
+
+    // Cart Routes
+    Route::prefix('cart')->name('user.cart.')->group(function () {
+        Route::get('/', [CartItemController::class, 'index'])->name('index');
+        Route::post('/store', [CartItemController::class, 'store'])->name('store');
+        Route::post('/update-quantity', [CartItemController::class, 'updateQuantity'])->name('updateQuantity');
+        Route::post('/remove/{id}', [CartItemController::class, 'remove'])->name('remove');
+    });
+
+    // Discount Routes
+    Route::get('/discount/apply', [ApplyDiscountController::class, 'showApplyForm'])->name('discounts.showForm');
+    Route::post('/discount/apply', [ApplyDiscountController::class, 'applyDiscount'])->name('discounts.apply');
 });
 
 // Admin Routes
-// Frontend routes
-Route::get('/contact', [ContactController::class, 'create'])->name('contact.form');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-
-// Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
-    // User Management Routes
+    // User Management
     Route::get('/users', [AdminController::class, 'listUser'])->name('users.list');
     Route::get('/users/create', [AdminController::class, 'createUser'])->name('users.create');
     Route::post('/users', [CrudUserController::class, 'storeUser'])->name('users.store');
@@ -94,61 +76,20 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{id}/edit', [AdminController::class, 'postUpdateUser'])->name('users.update');
     Route::get('/users/{id}/delete', [AdminController::class, 'deleteUser'])->name('users.delete');
 
+    // Product Management
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    // Contact Management
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
     Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
     Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
-
-});
-// Social Authentication Routes
-Route::controller(SocialiteController::class)->group(function () {
-    Route::get('auth/{provider}/redirect', 'authProviderRedirect')->name('auth.redirection');
-    Route::get('auth/{provider}/callback', 'socialAuthentication')->name('auth.callback');
 });
 
-Route::get('shop',[ProductsController::class, 'index'])->name('shop');
-Route::get('shop/{id}',[ProductsController::class, 'show'])->name('show');
-Route::get('admin',[ProductsController::class, 'getProductList'])->name('admin.get');
-
-// Cart routes
-Route::prefix('cart')->name('user.cart.')->group(function () {
-    Route::get('/', [CartItemController::class, 'index'])->name('index');
-    Route::post('/store', [CartItemController::class, 'store'])->name('store');
-    Route::post('/update-quantity', [CartItemController::class, 'updateQuantity'])->name('updateQuantity');
-    Route::post('/remove/{id}', [CartItemController::class, 'remove'])->name('remove');
-});
-
-// Route::get('/category',[
-//     Categories::class,
-//     'index'
-// ]);
-
-
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/products', [App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
-    Route::post('/products', [App\Http\Controllers\Admin\ProductController::class, 'store'])->name('products.store');
-    Route::get('/products/{id}/edit', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('products.edit');
-    Route::put('/products/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('products.update');
-    Route::delete('/products/{id}', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('products.destroy');});
-
+// Resource Routes
 Route::resource('discounts', DiscountController::class);
-// Route::prefix('discounts')->group(function () {
-//     Route::get('/', [DiscountController::class, 'index'])->name('discounts.index');
-//     Route::get('/create', [DiscountController::class, 'create'])->name('discounts.create');
-//     Route::post('/', [DiscountController::class, 'store'])->name('discounts.store');
-//     Route::get('/{discount_id}', [DiscountController::class, 'show'])->name('discounts.show');
-//     Route::get('/{discount_id}/edit', [DiscountController::class, 'edit'])->name('discounts.edit');
-//     Route::put('/{discount}', [DiscountController::class, 'update'])->name('discounts.update');
-//     Route::delete('/{discount}', [DiscountController::class, 'destroy'])->name('discounts.destroy');
-// });
-
 Route::resource('posts', PostController::class);
-// Route::prefix('posts')->group(function () {
-//     Route::get('/', [PostController::class, 'index'])->name('posts.index');
-//     Route::get('/create', [PostController::class, 'create'])->name('posts.create');
-//     Route::post('/', [PostController::class, 'store'])->name('posts.store');
-//     Route::get('/{post}', [PostController::class, 'show'])->name('posts.show');
-//     Route::get('/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-//     Route::put('/{post}', [PostController::class, 'update'])->name('posts.update');
-//     Route::delete('/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
-// });
 

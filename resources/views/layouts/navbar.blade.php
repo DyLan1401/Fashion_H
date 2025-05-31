@@ -32,30 +32,14 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('home') }}">HOME</a>
+                            <a class="nav-link" href="{{ route('home') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ Route('shop') }}">SHOP</a>
+                            <a class="nav-link" href="{{ Route('shop') }}">Shop</a>
                         </li>
 
                         <!-- Sản phẩm Dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                PRODUCTS
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="">Thời Trang Nam</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('signout') }}">Thời Trang nữ</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('signout') }}">Khuyến Mãi</a>
-                                </li>
-                            </ul>
-                        </li>
+                    
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('signout') }}">Blogs</a>
                         </li>
@@ -74,7 +58,7 @@
                             <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                Tài khoản
+                            Tài khoản
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 @guest
@@ -86,6 +70,12 @@
                                 @endguest
                             </ul>
                         </li>
+                        <li class="d-shop-cart">
+                            <a href="{{ route('user.cart.index') }}">
+                                <i class="flaticon-shopping-cart">
+
+                                </i>Giỏ hàng </a>
+
                     </ul>
                 </div>
             </div>

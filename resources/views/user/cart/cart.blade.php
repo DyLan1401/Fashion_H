@@ -1,4 +1,4 @@
-@extends('user.layouts.app');
+@extends('layouts.navbar');
 
 @section('content')
 
@@ -12,8 +12,6 @@
                     <div class="breadcrumb-text text-center">
                         <h1>Shoping Cart</h1>
                         <ul class="breadcrumb-menu">
-                            <li><a href="index.html">home</a></li>
-                            <li><span>Cart</span></li>
                         </ul>
                     </div>
                 </div>
@@ -78,7 +76,7 @@
 
                     </form>
                     <div class="row">
-                        <div class="col-md-5 ml-auto">
+                        <div class="col-md-5 ">
                             <div class="cart-page-total">
                                 <h2>Cart totals</h2>
                                 <ul class="mb-20">
