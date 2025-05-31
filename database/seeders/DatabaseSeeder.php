@@ -22,6 +22,7 @@ use Illuminate\Pagination\Paginator;
 namespace Database\Seeders;
 
 use App\Models\Categories;
+use App\Models\Product;
 use Database\Seeders\AdminUserSeeder;
 use Database\Seeders\ContactSeeder;
 use Database\Seeders\DiscountSeeder;
@@ -48,13 +49,14 @@ class DatabaseSeeder extends Seeder
          ContactSeeder::class,
         AdminUserSeeder::class,
         // PostSeeder::class,
-        DiscountSeeder::class
+        DiscountSeeder::class,
+        ProductSeeder::class,
 
        
           
-          $this->call([
-         
         ]);
+         
+       
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('user.layouts.app');
+@extends('layouts.navbar');
 
 @section('content')
 <main>

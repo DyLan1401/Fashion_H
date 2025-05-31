@@ -39,7 +39,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Danh mục</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $products->first()->categories->count() ?? 0 }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $products->first()->category->count() ?? 0 }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-tags fa-2x text-gray-300"></i>
@@ -85,7 +85,7 @@
                                      style="max-width: 50px;">
                             </td>
                             <td>{{ $product->product_name }}</td>
-                            <td>{{ $product->categories->category_name }}</td>
+                            <td>{{ $product->category->category_name }}</td>
                             <td>{{ $product->Type->type_name }}</td>
                             <td>{{ number_format($product->price) }}đ</td>
                             <td>{{ $product->quantity }}</td>
@@ -105,9 +105,13 @@
                                 <!-- <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-edit"></i>
                                 </a> -->
-                                <button class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+            <i class="fas fa-trash"></i> Xóa
+        </button>
+    </form>
                             </td>
                         </tr>
                         @endforeach

@@ -35,7 +35,7 @@
                             <a class="nav-link" href="{{ route('home') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ Route('shop') }}">Shop</a>
+                            <a class="nav-link" href="{{ Route('shop') }}">Blogs</a>
                         </li>
 
                         <!-- Sản phẩm Dropdown -->
@@ -66,15 +66,13 @@
                                 <li><a class="dropdown-item" href="{{ route('user.createUser') }}">Đăng ký</a></li>
                                 @else
                                 <li><a class="dropdown-item" href="{{ route('user.profile') }}">Thông tin cá nhân</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.cart.index') }}">Giỏ hàng</a></li>
+
                                 <li><a class="dropdown-item" href="{{ route('signout') }}">Đăng xuất</a></li>
                                 @endguest
                             </ul>
                         </li>
-                        <li class="d-shop-cart">
-                            <a href="{{ route('user.cart.index') }}">
-                                <i class="flaticon-shopping-cart">
-
-                                </i>Giỏ hàng </a>
+                       
 
                     </ul>
                 </div>

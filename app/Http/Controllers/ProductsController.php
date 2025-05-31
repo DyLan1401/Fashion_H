@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categories;
 use App\Models\Products;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -80,4 +81,6 @@ class ProductsController extends Controller
     public function getProductList(){
         return view('admin.product.index');
     }
+
+    
 }

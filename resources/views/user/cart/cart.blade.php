@@ -64,7 +64,7 @@
                                             <form action="{{ route('user.cart.remove', $item->id) }}" method="POST" style="display: inline;">
                                                 @csrf
                                                 <button type="submit" class="btn btn-link p-0" onclick="return confirm('Bạn muốn xóa sản phẩm ra khỏi giỏ hàng không?')">
-                                                    <i class="fa fa-times"></i>
+                                                    <i class="fa fa-times">D</i>
                                                 </button>
                                             </form>
                                         </td>
