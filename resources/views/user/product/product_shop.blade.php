@@ -78,6 +78,7 @@
                                                         : asset('img/product/image.png') 
                                                     }}"
                                                     alt="{{ $product->product_name }}"
+                                                    onerror="this.onerror=null; this.src='{{ asset(`img/product/image.png`) }}';"
                                                     onerror="this.onerror=null; this.src='{{ asset('img/product/image.png;') }}'"
                                                     style="width: 290; height: 360; object-fit: cover;">
                                             </a>
@@ -126,6 +127,7 @@
                                                         : asset('img/product/image.png') 
                                                     }}"
                                                     alt="{{ $product->product_name }}"
+                                                    onerror="this.onerror=null; this.src='{{ asset(`img/product/image.png`) }}';"
                                                     onerror="this.onerror=null; 
                                                     this.src={{ asset('img/product/image.png')}}"
                                             </a>
