@@ -15,7 +15,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
+        // DiscountSeeder::class, 
+        $this->call([
+            UserSeeder::class,
+         ContactSeeder::class,
+        AdminUserSeeder::class,
+        PostSeeder::class,
+        DiscountSeeder::class
+        ]);
+
     }
 
     /**

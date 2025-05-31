@@ -4,9 +4,13 @@ use App\Http\Controllers\ProductsController;
 use App\Models\Categories;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ApplyDiscountController;
 
-Route::get('/discount/apply', [DiscountController::class, 'showApplyForm'])->name('discounts.showForm');
-Route::post('/discount/apply', [DiscountController::class, 'applyDiscount'])->name('discounts.apply');
+
+use App\Http\Controllers\ApplyDis;
+Route::get('/discount/apply', [ApplyDiscountController::class, 'showApplyForm'])->name('discounts.showForm');
+Route::post('/discount/apply', [ApplyDiscountController::class, 'applyDiscount'])->name('discounts.apply');
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CrudUserController;
 use App\Http\Controllers\SocialiteController;
@@ -49,7 +53,6 @@ use App\Http\Controllers\ContactController;
 
 // Route::get('signout', [CrudUserController::class, 'signOut'])->name('signout');
 
-Route::resource('discounts', DiscountController::class);
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -84,22 +87,23 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // User Management Routes
     Route::get('/users', [AdminController::class, 'listUser'])->name('users.list');
     Route::get('/users/create', [AdminController::class, 'createUser'])->name('users.create');
-    Route::post('/users/create', [AdminController::class, 'postUser'])->name('users.store');
+    Route::post('/users', [CrudUserController::class, 'storeUser'])->name('users.store');
     Route::get('/users/{id}', [AdminController::class, 'readUser'])->name('users.show');
     Route::get('/users/{id}/edit', [AdminController::class, 'updateUser'])->name('users.edit');
     Route::post('/users/{id}/edit', [AdminController::class, 'postUpdateUser'])->name('users.update');
     Route::get('/users/{id}/delete', [AdminController::class, 'deleteUser'])->name('users.delete');
 
-    // Contact Management Routes - Sử dụng Admin ContactController
-    Route::resource('contacts', ContactController::class)
-        ->only(['index', 'show', 'destroy']);
-});
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
+});
 // Social Authentication Routes
 Route::controller(SocialiteController::class)->group(function () {
     Route::get('auth/{provider}/redirect', 'authProviderRedirect')->name('auth.redirection');
     Route::get('auth/{provider}/callback', 'socialAuthentication')->name('auth.callback');
 });
+
 Route::get('shop',[ProductsController::class, 'index'])->name('shop');
 Route::get('shop/{id}',[ProductsController::class, 'show'])->name('show');
 Route::get('admin',[ProductsController::class, 'getProductList'])->name('admin.get');
@@ -109,3 +113,26 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/products/{id}/edit', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{id}', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('products.destroy');});
+
+Route::resource('discounts', DiscountController::class);
+// Route::prefix('discounts')->group(function () {
+//     Route::get('/', [DiscountController::class, 'index'])->name('discounts.index');
+//     Route::get('/create', [DiscountController::class, 'create'])->name('discounts.create');
+//     Route::post('/', [DiscountController::class, 'store'])->name('discounts.store');
+//     Route::get('/{discount_id}', [DiscountController::class, 'show'])->name('discounts.show');
+//     Route::get('/{discount_id}/edit', [DiscountController::class, 'edit'])->name('discounts.edit');
+//     Route::put('/{discount}', [DiscountController::class, 'update'])->name('discounts.update');
+//     Route::delete('/{discount}', [DiscountController::class, 'destroy'])->name('discounts.destroy');
+// });
+
+Route::resource('posts', PostController::class);
+// Route::prefix('posts')->group(function () {
+//     Route::get('/', [PostController::class, 'index'])->name('posts.index');
+//     Route::get('/create', [PostController::class, 'create'])->name('posts.create');
+//     Route::post('/', [PostController::class, 'store'])->name('posts.store');
+//     Route::get('/{post}', [PostController::class, 'show'])->name('posts.show');
+//     Route::get('/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+//     Route::put('/{post}', [PostController::class, 'update'])->name('posts.update');
+//     Route::delete('/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+// });
+

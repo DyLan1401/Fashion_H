@@ -2,7 +2,12 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>Danh sách người dùng</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Danh sách người dùng</h2>
+        <a href="{{ route('admin.users.create') }}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Thêm người dùng
+        </a>
+    </div>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -25,7 +30,7 @@
                 <th class="text-center">Hành động</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody></tbody>
             @foreach($users as $user)
                 <tr>
                     <td>{{ $user->id }}</td>
@@ -44,4 +49,4 @@
     </table>
     {{ $users->links('pagination::bootstrap-5') }}
 </div>
-@endsection
+@endsection 

@@ -32,12 +32,22 @@
                     <td>{{ $contact->email }}</td>
                     <td>{{ $contact->created_at->format('d/m/Y H:i') }}</td>
                     <td class="text-center">
-                        <a href="{{ route('admin.contacts.show', $contact) }}" class="btn btn-info btn-sm">Xem</a>
-                        <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" style="display:inline-block">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</button>
-                        </form>
+                        @if ($contact && $contact->id)
+                            <a href="{{ route('admin.contacts.show', $contact) }}" class="btn btn-info btn-sm">Xem</a>
+                        @else
+                            <!-- Tùy chọn: Hiển thị thông báo hoặc bỏ qua -->
+                            Không thể xem
+                        @endif
+                        @if ($contact && $contact->id)
+                            <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" style="display:inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</button>
+                            </form>
+                        @else
+                            <!-- Tùy chọn: Hiển thị thông báo hoặc bỏ qua -->
+                            Không thể xóa
+                        @endif
                     </td>
                 </tr>
             @endforeach

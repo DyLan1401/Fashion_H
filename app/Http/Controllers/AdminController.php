@@ -19,9 +19,9 @@ class AdminController extends Controller
         $query = User::query();
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%$search%")
-                  ->orWhere('email', 'like', "%$search%") ;
+                    ->orWhere('email', 'like', "%$search%");
             });
         }
         $users = $query->paginate(10)->withQueryString();
@@ -36,9 +36,20 @@ class AdminController extends Controller
     public function postUser(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            ['name' => 'required',
+            'regex:/^[\pL\s]+$/u',
+             new \App\Rules\NoLeadingOrTrailingSpaces
+            ],
+            ['email' => 'required
+            |email|
+            unique:users'
+            , new \App\Rules\NoLeadingOrTrailingSpaces
+        ],
+            ['password' => 'required',
+            'min:6',
+            'max:16',
+             new \App\Rules\NoLeadingOrTrailingSpaces
+             ]
         ]);
         $data = $request->all();
         User::create([
@@ -67,9 +78,9 @@ class AdminController extends Controller
     {
         $input = $request->all();
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'required|min:6',
+            'name' => 'required|regex:/^[\pL\s]+$/u  ',
+            'email' => 'required|email|unique:users,email,  ' . $id,
+            'password' => 'required|min:6  ',
         ]);
         $user = User::find($id);
         $user->name = $input['name'];
