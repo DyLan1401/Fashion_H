@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+
 use App\Models\Products;
 use App\Models\Categories;
 use App\Models\Product_types;
@@ -13,6 +14,7 @@ class ProductController extends Controller
 {
     public function index()
     {
+
         $products = Products::with(['Category', 'Type'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -24,6 +26,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
             'product_description' => 'required|string',
@@ -49,6 +52,7 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
+
         $product = Products::findOrFail($id);
         $product->delete();
 
@@ -96,5 +100,6 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Sản phẩm đã được cập nhật thành công.');
+
     }
 } 
