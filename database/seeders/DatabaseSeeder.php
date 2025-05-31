@@ -2,43 +2,55 @@
 
 namespace App\Providers;
 
-use App\Models\Categories;
+
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\Paginator;
 
-class AppServiceProvider extends ServiceProvider
+   
+
+
+
+
+namespace Database\Seeders;
+
+use App\Models\Categories;
+use Database\Seeders\AdminUserSeeder;
+use Database\Seeders\ContactSeeder;
+use Database\Seeders\DiscountSeeder;
+use Database\Seeders\PostSeeder;
+use Database\Seeders\UserSeeder;
+use App\Models\User;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
 {
     /**
-     * Register any application services.
+     * Seed the application's database.
      */
-    public function register(): void
+    public function run(): void
     {
+        // User::factory(10)->create();
 
-        // DiscountSeeder::class, 
-        $this->call([
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+     'phone' => '0123456789',
+            'address' => 'Thanh pho ho chi minh',
+        
+        ]);
+
+          
+          $this->call([
             UserSeeder::class,
          ContactSeeder::class,
         AdminUserSeeder::class,
-        PostSeeder::class,
+        // PostSeeder::class,
         DiscountSeeder::class
         ]);
-
-    }
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Schema::defaultStringLength(191); // fix lỗi key quá dài cho utf8mb4
-
-        View::composer('user.layouts.app', function ($view) {
-            $categories = Categories::all(); 
-            $view->with('categories', $categories); 
-        });
-
-        Paginator::useBootstrap();
-    }
+ 
+ 
+ }
 }
