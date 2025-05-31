@@ -55,11 +55,17 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($posts as $post)
+                 @foreach ($posts as $post)
                     <tr>
                         <td>{{ $post->ma_bai_viet }}</td>
                         <td>{{ $post->tieu_de }}</td>
-                        <td><img src="{{ asset('storage/' . $post->anh_dai_dien) }}" alt="Ảnh đại diện" width="50" height="50"></td>
+                        <td>
+                            @if ($post->anh_dai_dien)
+                                <img src="{{ asset('storage/' . $post->anh_dai_dien) }}" alt="Ảnh đại diện" class="post-image">
+                            @else
+                                <span>Không có ảnh</span>
+                            @endif
+                        </td>
                         <td>{{ $post->user ? $post->user->name : 'abc' }}</td>
                         <td>{{ $post->trang_thai_bai_viet }}</td>
                         <td>
@@ -68,6 +74,7 @@
                             @else
                                 {{ \Carbon\Carbon::parse($post->ngay_tao ?? now())->format('Y-m-d H:i:s') }}
                             @endif
+                        </td>
                         </td>
                         <!-- <td>N/A</td> Không có updated_at, hiển thị N/A -->
                         <td>

@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Providers;
+namespace Database\Seeders;
 
-use App\Models\Categories;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Pagination\Paginator;
+// use App\Models\Categories;
+// use Illuminate\Support\Facades\View;
+// use Illuminate\Support\Facades\Schema;
+// use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Seeder;
 
-class AppServiceProvider extends ServiceProvider
+
+
+class DatabaseSeeder extends Seeder
 {
     /**
      * Register any application services.
      */
-    public function register(): void
+    public function run(): void
     {
 
         // DiscountSeeder::class, 
@@ -30,15 +32,15 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        Schema::defaultStringLength(191); // fix lỗi key quá dài cho utf8mb4
+    // public function boot(): void
+    // {
+    //     Schema::defaultStringLength(191); // fix lỗi key quá dài cho utf8mb4
 
-        View::composer('user.layouts.app', function ($view) {
-            $categories = Categories::all(); 
-            $view->with('categories', $categories); 
-        });
+    //     View::composer('user.layouts.app', function ($view) {
+    //         $categories = Categories::all(); 
+    //         $view->with('categories', $categories); 
+    //     });
 
-        Paginator::useBootstrap();
-    }
+    //     Paginator::useBootstrap();
+    // }
 }

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->string('tieu_de');
             $table->text('noi_dung')->nullable();
             $table->string('anh_dai_dien')->nullable();
-            $table->enum('trang_thai_bai_viet', ['draft', 'published'])->default('draft');
+            $table->enum('trang_thai_bai_viet', ['đã duyệt','chờ duyệt','từ chối'])->default('chờ duyệt');
             $table->unsignedBigInteger('ma_tac_gia');
             $table->timestamp('ngay_tao')->useCurrent();
 

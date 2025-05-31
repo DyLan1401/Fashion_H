@@ -44,6 +44,7 @@
             <select name="trang_thai_bai_viet" id="trang_thai_bai_viet" class="form-control" required>
                 <option value="Đã duyệt" {{ $post->trang_thai_bai_viet == 'Đã duyệt' ? 'selected' : '' }}>Đã duyệt</option>
                 <option value="Chờ duyệt" {{ $post->trang_thai_bai_viet == 'Chờ duyệt' ? 'selected' : '' }}>Chờ duyệt</option>
+                <option value="Chờ duyệt" {{ $post->trang_thai_bai_viet == 'tu choi' ? 'selected' : '' }}>từ choi</option>
             </select>
         </div>
         <div class="form-group mb-3">
