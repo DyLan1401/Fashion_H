@@ -1,4 +1,4 @@
-@extends('user.layouts.app');
+@extends('layouts.navbar');
 
 @section('content')
 
@@ -78,7 +78,8 @@
                                                         : asset('img/product/image.png') 
                                                     }}"
                                                     alt="{{ $product->product_name }}"
-                                                    onerror="this.onerror=null; this.src='{{ asset('img/product/image.png') }}';"
+                                                    onerror="this.onerror=null; this.src='{{ asset(`img/product/image.png`) }}';"
+                                                    onerror="this.onerror=null; this.src='{{ asset('img/product/image.png;') }}'"
                                                     style="width: 290; height: 360; object-fit: cover;">
                                             </a>
                                             <div class="product-action text-center">
@@ -126,7 +127,9 @@
                                                         : asset('img/product/image.png') 
                                                     }}"
                                                     alt="{{ $product->product_name }}"
-                                                    onerror="this.onerror=null; this.src='{{ asset('img/product/image.png') }}';"
+                                                    onerror="this.onerror=null; this.src='{{ asset(`img/product/image.png`) }}';"
+                                                    onerror="this.onerror=null; 
+                                                    this.src={{ asset('img/product/image.png')}}"
                                             </a>
                                         </div>
                                     </div>

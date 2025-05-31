@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-lg mb-5 bg-info">
+    <nav class="navbar navbar-light navbar-expand-lg mb-5 ">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">Trang chủ</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -35,7 +35,7 @@
                             <a class="nav-link" href="{{ route('home') }}">HOME</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">SHOP</a>
+                            <a class="nav-link" href="{{ Route('shop') }}">SHOP</a>
                         </li>
 
                         <!-- Sản phẩm Dropdown -->
