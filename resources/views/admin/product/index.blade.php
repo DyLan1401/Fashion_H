@@ -103,10 +103,10 @@
                                 </a>
                                 <!-- <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-edit"></i>
-                                </a>
+                                </a> -->
                                 <button class="btn btn-sm btn-danger">
                                     <i class="fas fa-trash"></i>
-                                </button> -->
+                                </button>
                             </td>
                         </tr>
                         @endforeach
