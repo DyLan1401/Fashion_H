@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use function Laravel\Prompts\alert;
+
 class AdminController extends Controller
 {
     public function dashboard()
@@ -79,7 +81,8 @@ class AdminController extends Controller
         $input = $request->all();
         $request->validate([
             'name' => 'required|regex:/^[\pL\s]+$/u  ',
-            'email' => 'required|email|unique:users,email,  ' . $id,
+            'email' => 'required|email|unique:users,email,'. $id,
+            'address'=>'string|max:255',
             'password' => 'required|min:6  ',
         ]);
         $user = User::find($id);
@@ -94,8 +97,16 @@ class AdminController extends Controller
     }
 
     public function deleteUser($id)
-    {
-        User::destroy($id);
-        return redirect()->route('admin.users.list');
+{
+    $user = User::find($id);
+
+    if (!$user) {
+return redirect()->route('admin.users.list')->with('danger', 'id không tồn tại ');
     }
+
+    $user->delete();
+
+    return redirect()->route('admin.users.list')->with('success', 'Xóa người dùng thành công.');
+}
+
 }

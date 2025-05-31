@@ -43,7 +43,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="password" class="form-label">Mật khẩu</label>
+                            <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control @error('password') is-invalid @enderror" 
                                    id="password" name="password" required>
                             @error('password')
@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <label for="phone" class="form-label">Phone</label>
                             <input type="tel" class="form-control @error('phone') is-invalid @enderror" 
                                    id="phone" name="phone" value="{{ old('phone') }}" required>
                             @error('phone')
@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="address" class="form-label">Địa chỉ</label>
+                    <label for="address" class="form-label">Address</label>
                     <textarea class="form-control @error('address') is-invalid @enderror" 
                               id="address" name="address" rows="3">{{ old('address') }}</textarea>
                     @error('address')
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="role" class="form-label">Vai trò</label>
+                    <label for="role" class="form-label">Role</label>
                     <select class="form-select @error('role') is-invalid @enderror" 
                             id="role" name="role" required>
                         <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>Người dùng</option>
@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Thêm người dùng</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
                 </div>
             </form>
         </div>

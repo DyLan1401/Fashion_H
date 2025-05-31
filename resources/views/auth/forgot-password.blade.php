@@ -3,43 +3,40 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-8">
             <div class="card">
-                <h3 class="card-header text-center">Quên Mật Khẩu</h3>
+                <div class="card-header">{{ __('Quên mật khẩu') }}</div>
+
                 <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
                         </div>
                     @endif
 
-                    @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-
-                    <form action="{{ route('user.forgotPassword') }}" method="POST">
+                    <form method="POST" action="{{ route('password.email') }}">
                         @csrf
-                        <div class="form-group mb-3">
-                            <input type="text" placeholder="Tên của bạn" id="name" class="form-control" name="name"
-                                   required autofocus>
-                            @if ($errors->has('name'))
-                                <span class="text-danger">{{ $errors->first('name') }}</span>
-                            @endif
+
+                        <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <input type="email" placeholder="Email" id="email" class="form-control"
-                                   name="email" required>
-                            @if ($errors->has('email'))
-                                <span class="text-danger">{{ $errors->first('email') }}</span>
-                            @endif
-                        </div>
-                        <div class="d-grid mx-auto">
-                            <button type="submit" class="btn btn-dark btn-block">Lấy lại mật khẩu</button>
-                        </div>
-                        <div class="text-center mt-3">
-                            <a href="{{ route('login') }}">Quay lại đăng nhập</a>
+
+                        <div class="row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Gửi link đặt lại mật khẩu') }}
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>

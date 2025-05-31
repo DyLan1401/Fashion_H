@@ -34,8 +34,7 @@
                                                 <input type="checkbox" name="remember"> Remember me!
                                             </label>
                                         </div>
-                                        <a href="{{ route('user.forgotPasswordForm') }}" class="text-danger">Lost your
-                                            password?</a>
+                                        <a href="{{ route('password.request') }}">Quên mật khẩu?</a>                                            password?</a>
                                     </div>
                                     <div class="container">
                                         <div class="row">
