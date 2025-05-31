@@ -1,41 +1,44 @@
-<!-- resources/views/discounts/create.blade.php -->
 @extends('dashboard')
 
 @section('content')
-    <h1>Tạo Mã Giảm Giá Mới</h1>
+    <h1>Tạo mã giảm giá mới</h1>
+
     @if ($errors->any())
         <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            <ul>@foreach ($errors->all() as $error) <li>{{ $error }}</li> @endforeach</ul>
         </div>
     @endif
-    <form method="POST" action="{{ route('discounts.store') }}">
+
+    <form action="{{ route('discounts.store') }}" method="POST">
         @csrf
-        <div class="form-group">
-            <label for="phan_tram_giam_gia">Phần Trăm Giảm Giá</label>
+        <div class="mb-3">
+            <label for="ma_giam_gia" class="form-label">Mã giảm giá</label>
+            <input type="text" name="ma_giam_gia" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="phan_tram_giam_gia" class="form-label">Phần trăm giảm giá</label>
             <input type="number" step="0.01" name="phan_tram_giam_gia" class="form-control" required>
         </div>
-        <div class="form-group">
-            <label for="loai_giam_gia">Loại Giảm Giá</label>
-            <select name="loai_giam_gia" class="form-control" disabled>
-                <option value="percentage" selected>Phần trăm</option>
+        <div class="mb-3">
+            <label for="loai_giam_gia" class="form-label">Loại</label>
+            <select name="loai_giam_gia" class="form-control" required>
+                <option value="percentage">Phần trăm</option>
+                <option value="fixed">Cố định</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="gia_tri_don_hang_toi_thieu">Giá Trị Đơn Hàng Tối Thiểu</label>
+        <div class="mb-3">
+            <label for="gia_tri_don_hang_toi_thieu" class="form-label">Giá trị đơn hàng tối thiểu</label>
             <input type="number" step="0.01" name="gia_tri_don_hang_toi_thieu" class="form-control">
         </div>
-        <div class="form-group">
-            <label for="so_lan_su_dung_toi_da">Số Lần Sử Dụng Tối Đa</label>
+        <div class="mb-3">
+            <label for="so_lan_su_dung_toi_da" class="form-label">Số lần sử dụng tối đa</label>
             <input type="number" name="so_lan_su_dung_toi_da" class="form-control">
         </div>
-        <div class="form-group">
-            <label for="ngay_het_han_giam_gia">Ngày Hết Hạn Giảm Giá</label>
-            <input type="datetime-local" name="ngay_het_han_giam_gia" class="form-control" required value="{{ now()->addDay()->format('Y-m-d\TH:i') }}">
+        <div class="mb-3">
+            <label for="ngay_het_han_giam_gia" class="form-label">Ngày hết hạn</label>
+            <input type="datetime-local" name="ngay_het_han_giam_gia" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Tạo</button>
+        <button type="submit" class="btn btn-success">Tạo mới</button>
+        <a href="{{ route('discounts.index') }}" class="btn btn-secondary">Quay lại</a>
     </form>
 @endsection
