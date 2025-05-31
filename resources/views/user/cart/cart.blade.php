@@ -84,7 +84,7 @@
                                 <ul class="mb-20">
                                     <li>Total <span>{{ $total }}</span></li>
                                 </ul>
-                                <a class="btn theme-btn" href="#">Proceed to checkout</a>
+                                <a class="btn theme-btn" href="{{ route('user.cart.checkout') }}">Proceed to checkout</a>
                             </div>
                         </div>
                     </div>

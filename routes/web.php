@@ -4,6 +4,7 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\ProductsController;
 use App\Models\Categories;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('user/home/index');
@@ -18,6 +19,13 @@ Route::prefix('cart')->name('user.cart.')->group(function () {
     Route::post('/store', [CartItemController::class, 'store'])->name('store');
     Route::post('/update-quantity', [CartItemController::class, 'updateQuantity'])->name('updateQuantity');
     Route::post('/remove/{id}', [CartItemController::class, 'remove'])->name('remove');
+    Route::get('/checkout', [CartItemController::class, 'checkout'])->name('checkout');
+    Route::post('/place-order', [CartItemController::class, 'placeOrder'])->name('placeOrder');
+});
+
+// Order routes
+Route::prefix('orders')->name('user.orders.')->group(function () {
+    Route::get('/{order_id}', [OrderController::class, 'show'])->name('show');
 });
 
 // Route::get('/category',[
